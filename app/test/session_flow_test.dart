@@ -5,6 +5,7 @@ import 'package:fcorpo/core/rate.dart';
 import 'package:fcorpo/data/database.dart';
 import 'package:fcorpo/widgets/pixel_ceo.dart';
 import 'package:fcorpo/state/providers.dart';
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,6 +63,18 @@ void main() {
 
     final db = c.read(databaseProvider);
     expect(await db.select(db.sessions).get(), hasLength(1));
+  });
+
+  test('theme mode defaults to system and persists', () async {
+    final c = await _container();
+    expect(c.read(themeModeProvider), ThemeMode.system);
+    await c.read(themeModeProvider.notifier).select(ThemeMode.light);
+
+    final fresh = ProviderContainer(overrides: [
+      sharedPrefsProvider.overrideWithValue(c.read(sharedPrefsProvider)),
+    ]);
+    addTearDown(fresh.dispose);
+    expect(fresh.read(themeModeProvider), ThemeMode.light);
   });
 
   test('anger escalates with earnings', () {

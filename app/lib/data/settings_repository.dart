@@ -46,6 +46,13 @@ class SettingsRepository {
     await _prefs.setString(_boss, p.bossName);
   }
 
+  static const _themeMode = 'theme_mode';
+
+  String? get themeMode => _prefs.getString(_themeMode);
+
+  Future<void> setThemeMode(String name) =>
+      _prefs.setString(_themeMode, name);
+
   static const _pro = 'pro_unlocked';
   static const _cardTheme = 'card_theme';
 

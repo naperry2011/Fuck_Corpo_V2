@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/theme.dart';
 import 'features/onboarding/intake_form_screen.dart';
+import 'features/pro/billing.dart';
 import 'features/home_shell.dart';
 import 'state/providers.dart';
 
@@ -30,11 +31,15 @@ class FuckCorpoApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hasProfile = ref.watch(profileProvider.select((p) => p != null));
+    // Start billing at launch so purchases from earlier sessions get
+    // delivered and acknowledged even if the paywall is never opened.
+    if (!unlockProForThisBuild) ref.watch(billingProvider);
     return MaterialApp(
       title: 'F*ck Corpo',
       debugShowCheckedModeBanner: false,
       theme: payslipLight,
       darkTheme: payslipNightShift,
+      themeMode: ref.watch(themeModeProvider),
       home: hasProfile ? const HomeShell() : const IntakeFormScreen(),
     );
   }

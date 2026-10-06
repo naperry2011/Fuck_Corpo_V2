@@ -32,6 +32,7 @@ class PerksScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isPro = ref.watch(proProvider);
     final style = ref.watch(receiptStyleProvider);
+    final themeMode = ref.watch(themeModeProvider);
     final sessions = ref.watch(sessionsProvider).value ?? const [];
     final earned = [for (final a in achievements) a.test(sessions)];
     final scheme = Theme.of(context).colorScheme;
@@ -109,6 +110,22 @@ class PerksScreen extends ConsumerWidget {
                   onTap: s.pro && !isPro
                       ? () => PaywallScreen.open(context)
                       : () => ref.read(receiptStyleProvider.notifier).select(s),
+                ),
+            ]),
+            const DashedDivider(),
+            Text('APPEARANCE', style: TextStyle(color: faded)),
+            const SizedBox(height: 8),
+            Wrap(spacing: 8, runSpacing: 8, children: [
+              for (final (mode, label) in const [
+                (ThemeMode.system, 'SYSTEM'),
+                (ThemeMode.light, 'PAPER'),
+                (ThemeMode.dark, 'NIGHT SHIFT'),
+              ])
+                ModeChip(
+                  label: label,
+                  selected: themeMode == mode,
+                  onTap: () =>
+                      ref.read(themeModeProvider.notifier).select(mode),
                 ),
             ]),
             const DashedDivider(),

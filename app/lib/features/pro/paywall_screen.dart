@@ -1,12 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../state/providers.dart';
 import '../../widgets/payslip_parts.dart';
-
-/// Placeholder until the Play Console product exists. Shown on the paywall
-/// so nobody forgets it is not the real price yet.
-const proPriceLabel = r'$2.99';
+import 'billing.dart';
 
 const _perks = [
   ('3 NEW BREAKS', 'Doomscroll, Fake Meeting, and Coffee Run.'),
@@ -24,7 +22,25 @@ class PaywallScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final faded = Theme.of(context).colorScheme.onSurfaceVariant;
+    ref.listen(proProvider, (was, isPro) {
+      if (was == false && isPro) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Welcome to management. Gross.')));
+        Navigator.of(context).maybePop();
+      }
+    });
+
+    final billing = ref.watch(billingProvider);
+    final notifier = ref.read(billingProvider.notifier);
+    final scheme = Theme.of(context).colorScheme;
+    final faded = scheme.onSurfaceVariant;
+    final price = billing.product?.price;
+    final busy = billing.status == BillingStatus.loading ||
+        billing.status == BillingStatus.pending;
+
+    void unavailable() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(billing.message ?? 'Still connecting to Google Play.')));
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -53,24 +69,53 @@ class PaywallScreen extends ConsumerWidget {
                 ),
               ),
             const DashedDivider(),
-            const LineItem('COMPENSATION', '$proPriceLabel ONE TIME',
-                style: TextStyle(fontSize: 18)),
+            LineItem('COMPENSATION', price == null ? '...' : '$price ONE TIME',
+                style: const TextStyle(fontSize: 18)),
             Text("No subscription. We're not monsters.",
                 style: TextStyle(color: faded, fontSize: 12)),
-            const SizedBox(height: 24),
-            const Center(child: Stamp('TEST MODE', fontSize: 14)),
-            const SizedBox(height: 24),
+            if (billing.message != null &&
+                billing.status != BillingStatus.ready) ...[
+              const SizedBox(height: 16),
+              Text(
+                billing.message!,
+                style: TextStyle(
+                    color: billing.status == BillingStatus.pending
+                        ? faded
+                        : scheme.error,
+                    fontSize: 13),
+              ),
+            ],
+            const SizedBox(height: 28),
             FilledButton(
-              onPressed: () async {
-                await ref.read(proProvider.notifier).unlock();
-                if (context.mounted) Navigator.of(context).pop();
-              },
-              child: const Text('ACCEPT PROMOTION (TEST)'),
+              onPressed: busy
+                  ? null
+                  : billing.product == null
+                      ? unavailable
+                      : notifier.buy,
+              child: Text(switch (billing.status) {
+                BillingStatus.loading => 'CONNECTING TO HR...',
+                BillingStatus.pending => 'PROCESSING PAPERWORK...',
+                _ => price == null
+                    ? 'ACCEPT PROMOTION'
+                    : 'ACCEPT PROMOTION · $price',
+              }),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: notifier.restore,
+              child: const Text('ALREADY PROMOTED? RESTORE'),
+            ),
+            if (kDebugMode) ...[
+              const SizedBox(height: 12),
+              OutlinedButton(
+                onPressed: () => ref.read(proProvider.notifier).unlock(),
+                child: const Text('DEBUG: PROMOTE WITHOUT PAYING'),
+              ),
+            ],
+            const SizedBox(height: 12),
             Text(
-              'Test mode: no money changes hands. Real Google Play billing '
-              'replaces this before launch.',
+              'One-time purchase through Google Play. Restores automatically '
+              'on reinstall with the same Google account.',
               textAlign: TextAlign.center,
               style: TextStyle(color: faded, fontSize: 11),
             ),

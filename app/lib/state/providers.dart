@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,11 +39,34 @@ class ProfileNotifier extends Notifier<PayProfile?> {
 final profileProvider =
     NotifierProvider<ProfileNotifier, PayProfile?>(ProfileNotifier.new);
 
-/// Pro entitlement. TEST MODE: unlock() just flips a local flag. Swap the
-/// body for a Play Billing / RevenueCat purchase before release.
+/// System by default; Paper (light) or Night shift (dark) when picked in Perks.
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  @override
+  ThemeMode build() {
+    final saved = ref.watch(settingsProvider).themeMode;
+    return ThemeMode.values
+        .firstWhere((m) => m.name == saved, orElse: () => ThemeMode.system);
+  }
+
+  Future<void> select(ThemeMode mode) async {
+    await ref.read(settingsProvider).setThemeMode(mode.name);
+    state = mode;
+  }
+}
+
+final themeModeProvider =
+    NotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);
+
+/// Personal builds only: `--dart-define=UNLOCK_PRO=true` grants Pro without
+/// billing. Never pass it to a build uploaded to Play.
+const unlockProForThisBuild = bool.fromEnvironment('UNLOCK_PRO');
+
+/// Pro entitlement, cached locally. Set by a confirmed Google Play purchase
+/// or restore (see features/pro/billing.dart).
 class ProNotifier extends Notifier<bool> {
   @override
-  bool build() => ref.watch(settingsProvider).proUnlocked;
+  bool build() =>
+      unlockProForThisBuild || ref.watch(settingsProvider).proUnlocked;
 
   Future<void> unlock() async {
     await ref.read(settingsProvider).setProUnlocked(true);
