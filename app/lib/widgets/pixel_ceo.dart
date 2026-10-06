@@ -79,13 +79,20 @@ class _CeoPainter extends CustomPainter {
       'G': const Color(0xFFEF9F27),
       'T': const Color(0xFFA32D2D),
     };
-    final paint = Paint();
+    // Snap cell edges to whole pixels with anti-aliasing off, otherwise
+    // neighbouring cells blend at fractional edges and show faint seams.
+    final paint = Paint()..isAntiAlias = false;
+    double snap(double v) => v.roundToDouble();
     for (var y = 0; y < rows.length; y++) {
       for (var x = 0; x < rows[y].length; x++) {
         final c = colors[rows[y][x]];
         if (c == null) continue;
         paint.color = c;
-        canvas.drawRect(Rect.fromLTWH(x * px, top + y * px, px, px), paint);
+        canvas.drawRect(
+          Rect.fromLTRB(snap(x * px), snap(top + y * px), snap((x + 1) * px),
+              snap(top + (y + 1) * px)),
+          paint,
+        );
       }
     }
   }

@@ -124,6 +124,17 @@ class PerksScreen extends ConsumerWidget {
                   builder: (_) => const IntakeFormScreen(editing: true))),
               child: const Text('AMEND PAPERWORK'),
             ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: () => showLicensePage(
+                context: context,
+                applicationName: 'F*ck Corpo',
+                applicationLegalese:
+                    'Satire. We just do the math. Your ledger never leaves '
+                    'this phone.',
+              ),
+              child: const Text('LEGAL FINE PRINT'),
+            ),
             if (kDebugMode && isPro) ...[
               const SizedBox(height: 12),
               OutlinedButton(

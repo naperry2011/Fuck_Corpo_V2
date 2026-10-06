@@ -12,7 +12,9 @@ String clock(Duration d) {
 }
 
 String longDuration(Duration d) {
-  final m = d.inMinutes;
+  final h = d.inHours;
+  final m = d.inMinutes.remainder(60);
   final s = d.inSeconds.remainder(60);
-  return m > 0 ? '${m}m ${s}s' : '${s}s';
+  if (h > 0) return '${h}h ${m}m';
+  return d.inMinutes > 0 ? '${m}m ${s}s' : '${s}s';
 }
