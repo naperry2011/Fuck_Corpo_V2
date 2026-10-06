@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuck Corpo: Get Paid to Poop Calculator</title>
+<meta name="description" content="How much does your boss pay you to poop? Free paid-to-poop calculator, plus an app that clocks every dump, smoke break, and lunch heist on company time.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fuck Corpo: Get Paid to Poop">
+<meta property="og:description" content="Your boss pays you to shit. Might as well track it.">
+<meta property="og:image" content="/og.png">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1a1a1a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/CourierPrime-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Fuck Corpo",
+  "applicationCategory": "EntertainmentApplication",
+  "operatingSystem": "Android",
+  "description": "Calculates how much your employer pays you while you poop, smoke, or eat on the clock.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <strong>FUCK CORPO INC.</strong>
+    <nav><a href="#calculator">CALCULATOR</a><a href="/privacy">PRIVACY</a></nav>
+  </header>
+  <hr class="dash">
+
+  <main>
+    <section aria-labelledby="hero">
+      <p class="kicker">OFFICIAL PAYSLIP</p>
+      <h1 id="hero">Your boss pays you to shit.<br>Might as well track it.</h1>
+      <p class="muted">Earned at $25/hr while you read this page:</p>
+      <div class="ticker" id="ticker" aria-live="off">$0.0000</div>
+      <span class="stamp">PAID IN FULL</span>
+      <p>Fuck Corpo clocks every dump, smoke break, and lunch heist on company time, prints you a receipt, and hits you with a year-end W-2 of wages stolen back.</p>
+      <p><a class="btn" href="#calculator">CALCULATE MY TAKE</a></p>
+      <p class="small muted">Android app coming soon to Google Play.</p>
+    </section>
+
+    <hr class="dash">
+
+    <section id="calculator" aria-labelledby="calc-title">
+      <p class="kicker">FORM 69-A · EMPLOYEE INTAKE</p>
+      <h2 id="calc-title">How much does Corpo pay you to poop?</h2>
+      <form id="calc" novalidate>
+        <p class="kicker">PAY TYPE</p>
+        <div class="chips" role="radiogroup" aria-label="Pay type">
+          <label><input type="radio" name="paytype" value="hourly" checked><span>HOURLY</span></label>
+          <label><input type="radio" name="paytype" value="salary"><span>SALARY</span></label>
+        </div>
+        <p class="kicker">CURRENCY</p>
+        <div class="chips" role="radiogroup" aria-label="Currency">
+          <label><input type="radio" name="currency" value="$" checked><span>$</span></label>
+          <label><input type="radio" name="currency" value="€"><span>€</span></label>
+          <label><input type="radio" name="currency" value="£"><span>£</span></label>
+        </div>
+        <div class="field">
+          <label for="amount">WAGE THEY THINK YOU'RE WORTH <span id="amount-suffix">/ hr</span></label>
+          <input id="amount" type="number" inputmode="decimal" min="0" step="0.01" value="24.50">
+        </div>
+        <div class="field">
+          <label for="hours">HOURS YOU GIVE THESE BASTARDS / WEEK</label>
+          <input id="hours" type="number" inputmode="decimal" min="1" max="168" step="0.5" value="40">
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="minutes">MINUTES PER DUMP</label>
+            <input id="minutes" type="number" inputmode="numeric" min="1" max="480" value="12">
+          </div>
+          <div class="field">
+            <label for="perday">DUMPS PER WORKDAY</label>
+            <input id="perday" type="number" inputmode="numeric" min="1" max="20" value="1">
+          </div>
+        </div>
+        <p class="error" id="calc-error" role="alert"></p>
+      </form>
+
+      <hr class="dash">
+      <div aria-live="polite">
+        <div class="row"><span>Your rate</span><span id="out-rate">-</span></div>
+        <div class="row"><span>1x Corporate dump</span><span id="out-dump">-</span></div>
+        <div class="row"><span>Time on the throne / year</span><span id="out-hours">-</span></div>
+        <hr class="dash">
+        <div class="row total"><span>PAID TO POOP / YEAR</span><span id="out-year">-</span></div>
+        <p class="small muted" id="out-ceo"></p>
+      </div>
+      <p class="small muted">Assumes 5 workdays a week, 52 weeks a year. Satire, not financial advice.</p>
+    </section>
+
+    <hr class="dash">
+
+    <section aria-labelledby="app-title">
+      <p class="kicker">THE APP</p>
+      <h2 id="app-title">Clock in. Sit down. Get paid.</h2>
+      <div class="grid">
+        <div>
+          <h3>Live money ticker</h3>
+          <p class="muted">Throne, Smoke, and Lunch modes. Watch the cents stack up while a pixel CEO loses his mind.</p>
+        </div>
+        <div>
+          <h3>Shareable receipts</h3>
+          <p class="muted">Every session prints a receipt made for your group chat, your story, or your boss's inbox (don't).</p>
+        </div>
+        <div>
+          <h3>Corpo Wrapped</h3>
+          <p class="muted">A year-end W-2(ish) of wages stolen back: total reclaimed, longest dump, peak slacking season.</p>
+        </div>
+        <div>
+          <h3>No accounts. No tracking.</h3>
+          <p class="muted">Your ledger lives on your phone. HR will never know.</p>
+        </div>
+      </div>
+      <div class="slip-stage" style="margin-top:24px">
+        <img src="/og.png" width="1080" height="1350" loading="lazy" alt="Sample Fuck Corpo receipt: 1x corporate dump, 45 seconds, paid by Karen's budget, total 31 cents, stamped paid in full.">
+      </div>
+    </section>
+  </main>
+
+  <hr class="dash">
+  <footer>
+    <p>Fuck Corpo is satire. We don't encourage time theft; we just do the math. Don't get fired.</p>
+    <p><a href="/privacy">Privacy policy</a></p>
+  </footer>
+</div>
+<script src="/calc.js"></script>
+</body>
+</html>

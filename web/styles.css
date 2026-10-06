@@ -1,0 +1,153 @@
+@font-face {
+  font-family: "Courier Prime";
+  src: url("/fonts/CourierPrime-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Courier Prime";
+  src: url("/fonts/CourierPrime-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f4f1e8;
+  --ink: #1a1a1a;
+  --faded: #5f5e5a;
+  --stamp: #a32d2d;
+  --backdrop: #1a1a1a;
+  --slip: #f4f1e8;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #16161a;
+    --ink: #e6e2d6;
+    --faded: #8a877e;
+    --stamp: #e24b4a;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Courier Prime", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+a { color: inherit; }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+header.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+  letter-spacing: 0.08em;
+  font-size: 14px;
+}
+header.top nav { display: flex; gap: 16px; }
+header.top nav a { text-decoration: none; border-bottom: 1px solid currentColor; }
+
+.dash { border: 0; border-top: 1.5px dashed var(--ink); margin: 24px 0; }
+
+h1, h2, h3 { font-weight: 700; line-height: 1.1; letter-spacing: 0.02em; margin: 0 0 12px; }
+h1 { font-size: clamp(36px, 9vw, 64px); }
+h2 { font-size: clamp(24px, 5vw, 32px); }
+h3 { font-size: 18px; }
+
+.kicker { color: var(--faded); letter-spacing: 0.12em; font-size: 14px; margin: 0 0 8px; }
+.muted { color: var(--faded); }
+.small { font-size: 14px; }
+
+.ticker {
+  font-size: clamp(40px, 11vw, 72px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin: 8px 0 4px;
+  overflow-wrap: anywhere;
+}
+
+.stamp {
+  display: inline-block;
+  border: 3px solid var(--stamp);
+  color: var(--stamp);
+  padding: 4px 14px;
+  letter-spacing: 0.15em;
+  transform: rotate(-7deg);
+  font-weight: 700;
+  margin: 12px 0;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: 14px 22px;
+  border-radius: 6px;
+  font: inherit;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn.ghost { background: transparent; color: var(--ink); }
+
+.row { display: flex; justify-content: space-between; gap: 16px; padding: 4px 0; }
+.row > :last-child { text-align: right; }
+.row.total { font-size: 22px; font-weight: 700; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 18px; }
+.chips label { position: relative; }
+.chips input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.chips span {
+  display: inline-block;
+  border: 1.5px solid var(--ink);
+  padding: 6px 12px;
+  letter-spacing: 0.1em;
+}
+.chips input:checked + span { background: var(--ink); color: var(--paper); }
+.chips input:focus-visible + span { outline: 2px solid var(--stamp); outline-offset: 2px; }
+
+.field { margin: 0 0 18px; }
+.field label { display: block; color: var(--faded); font-size: 14px; letter-spacing: 0.08em; }
+.field input {
+  width: 100%;
+  font: inherit;
+  font-size: 20px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1.5px solid var(--ink);
+  padding: 6px 0;
+  border-radius: 0;
+}
+.field input:focus { outline: none; border-bottom-width: 3px; }
+.error { color: var(--stamp); font-size: 14px; min-height: 1.4em; margin: 4px 0 0; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 24px; }
+
+.slip-stage {
+  background: var(--backdrop);
+  padding: 28px 16px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+}
+.slip-stage img { width: 100%; max-width: 420px; height: auto; display: block; }
+
+.policy h2 { font-size: 20px; margin-top: 28px; }
+.policy li { margin: 4px 0; }
+
+footer { padding: 24px 0 48px; font-size: 14px; color: var(--faded); }
+footer a { color: var(--ink); }
