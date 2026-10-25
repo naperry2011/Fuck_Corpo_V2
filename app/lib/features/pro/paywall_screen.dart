@@ -8,7 +8,8 @@ import 'billing.dart';
 
 const _perks = [
   ('3 NEW BREAKS', 'Doomscroll, Fake Meeting, and Coffee Run.'),
-  ('10 ACHIEVEMENTS', 'Mogul, Union Rep, Snip It Off, and more.'),
+  ('15 ACHIEVEMENTS', 'Mogul, Union Rep, Franchise Tour, Bank Run, and more.'),
+  ('PORTFOLIO INTEL', 'Takeover stats by category. Know your market.'),
   ('3 RECEIPT STYLES', 'Gold Receipt, CEO Memo, and Strike Poster.'),
   ('UNHINGED ROAST PACK', 'Meaner receipts. HR would not approve.'),
   ('CSV EXPORT', 'Your full ledger, for spreadsheets or the union.'),

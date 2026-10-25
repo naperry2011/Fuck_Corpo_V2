@@ -20,8 +20,10 @@ class ReceiptScreen extends ConsumerStatefulWidget {
 
 class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
   final _cardKey = GlobalKey();
-  late final String _roast =
-      receiptRoast(widget.session.mode, isPro: ref.read(proProvider));
+  late final bool _isTakeover = widget.session.businessName != null;
+  late final String _roast = _isTakeover
+      ? takeoverRoast()
+      : receiptRoast(widget.session.mode, isPro: ref.read(proProvider));
   bool _sharing = false;
 
   Future<void> _share() async {
@@ -31,7 +33,8 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
           as RenderRepaintBoundary;
       final file = await captureCard(
           boundary, 'fuck-corpo-receipt-${widget.session.id}');
-      await shareCardImage(file, text: shareCaption);
+      await shareCardImage(file,
+          text: _isTakeover ? takeoverCaption : shareCaption);
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -59,13 +62,20 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
             FittedBox(
               child: RepaintBoundary(
                 key: _cardKey,
-                child: ShareCard(
-                  session: s,
-                  currency: cur,
-                  bossName: profile.bossName,
-                  roast: _roast,
-                  style: ref.watch(receiptStyleProvider),
-                ),
+                child: _isTakeover
+                    ? InvoiceCard(
+                        session: s,
+                        currency: cur,
+                        roast: _roast,
+                        style: ref.watch(receiptStyleProvider),
+                      )
+                    : ShareCard(
+                        session: s,
+                        currency: cur,
+                        bossName: profile.bossName,
+                        roast: _roast,
+                        style: ref.watch(receiptStyleProvider),
+                      ),
               ),
             ),
             const SizedBox(height: 16),

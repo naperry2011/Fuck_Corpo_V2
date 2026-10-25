@@ -11,7 +11,7 @@
 <p align="center">
   <img alt="Flutter" src="https://img.shields.io/badge/Flutter-3.44-1a1a1a?style=flat-square&logo=flutter&logoColor=f4f1e8">
   <img alt="Android" src="https://img.shields.io/badge/Android-first-1a1a1a?style=flat-square&logo=android&logoColor=f4f1e8">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-28%20passing-1a1a1a?style=flat-square">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-37%20passing-1a1a1a?style=flat-square">
   <img alt="Status" src="https://img.shields.io/badge/status-pre--launch-a32d2d?style=flat-square">
   <a href="https://fuckcorpov2-web.vercel.app"><img alt="Website" src="https://img.shields.io/badge/website-live-1a1a1a?style=flat-square&logo=vercel&logoColor=f4f1e8"></a>
 </p>
@@ -64,14 +64,16 @@ A satirical Android app that clocks every dump, smoke break, and lunch heist you
 | 4 | **Ledger** | Today, week, month, year. Longest session. Streaks. Late paperwork for the ones you forgot. |
 | 5 | **Corpo Wrapped** | Swipeable year-in-review slides: total reclaimed, peak slacking season, how fast the CEO earns your whole haul. |
 | 6 | **Night shift** | Carbon-copy dark mode, or keep it on paper. Your call. |
-| 7 | **Zero surveillance** | No account, no ads, no analytics. Your ledger never leaves the phone. HR will never know. |
+| 7 | **Hostile Takeovers** | Dropping a deuce at Starbucks? Bill them for it. Get a damages invoice (water, TP, soap, AC, Wi-Fi) stamped ACQUIRED, and build a portfolio of every company you've conquered. |
+| 8 | **Zero surveillance** | No account, no ads, no analytics. Your ledger never leaves the phone. HR will never know. |
 
 ## Promotion to Management
 
 One-time Pro unlock through Google Play. No subscription. We're not monsters.
 
 - **3 more breaks:** Doomscroll, Fake Meeting, Coffee Run
-- **10 achievements:** Snip It Off, The Marathon, Mogul, Union Rep, Grand Larceny, and more
+- **15 achievements:** Snip It Off, Mogul, Union Rep, Franchise Tour, Bank Run, Fortune 500, and more
+- **Portfolio intel:** your hostile takeovers broken down by industry
 - **3 receipt styles:** Gold Receipt, CEO Memo, Strike Poster
 - **Unhinged roast pack:** meaner receipts, HR would not approve
 - **CSV export:** for spreadsheets, or the union

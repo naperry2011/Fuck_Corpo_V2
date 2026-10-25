@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
 import '../core/break_mode.dart';
+import '../core/takeover.dart';
 
 part 'database.g.dart';
 
@@ -11,6 +12,12 @@ class Sessions extends Table {
   DateTimeColumn get startedAt => dateTime()();
   IntColumn get durationMs => integer()();
   RealColumn get earned => real()();
+
+  // Hostile takeovers (schema v2). All null for sessions at your own job.
+  TextColumn get businessName => text().nullable()();
+  TextColumn get businessCategory =>
+      textEnum<BusinessCategory>().nullable()();
+  RealColumn get damages => real().nullable()();
 }
 
 @DriftDatabase(tables: [Sessions])
@@ -19,7 +26,18 @@ class AppDatabase extends _$AppDatabase {
       : super(executor ?? driftDatabase(name: 'fcorpo'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onUpgrade: (m, from, to) async {
+          if (from < 2) {
+            await m.addColumn(sessions, sessions.businessName);
+            await m.addColumn(sessions, sessions.businessCategory);
+            await m.addColumn(sessions, sessions.damages);
+          }
+        },
+      );
 
   Future<Session> addSession(SessionsCompanion entry) =>
       into(sessions).insertReturning(entry);

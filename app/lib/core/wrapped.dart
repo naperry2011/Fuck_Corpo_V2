@@ -1,5 +1,6 @@
 import '../data/database.dart';
 import 'break_mode.dart';
+import 'portfolio.dart';
 import 'stats.dart';
 
 class WrappedStats {
@@ -16,6 +17,7 @@ class WrappedStats {
     required this.busiestMonth,
     required this.busiestMonthEarned,
     required this.bestStreak,
+    required this.portfolio,
   });
 
   final int year;
@@ -32,6 +34,7 @@ class WrappedStats {
   final int? busiestMonth;
   final double busiestMonthEarned;
   final int bestStreak;
+  final Portfolio portfolio;
 
   bool get isEmpty => count == 0;
 
@@ -81,6 +84,7 @@ class WrappedStats {
       busiestMonth: busiest,
       busiestMonthEarned: busiest == null ? 0 : byMonth[busiest],
       bestStreak: streaksFor(sessions, DateTime(year, 12, 31)).best,
+      portfolio: Portfolio.from(sessions),
     );
   }
 }

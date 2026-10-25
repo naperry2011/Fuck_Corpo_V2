@@ -1,10 +1,10 @@
 # Feature Boundaries
 
-Generated: 2026-10-05 | commit be5fb09 | by /code-map
+Generated: 2026-10-25 | commit dc30960 | by /code-map
 
 ## Core (app/lib/core)
 
-Owns: pay rate math, formatting, stats/streaks, Wrapped aggregates, achievements, mode and receipt-style enums, theme palette.
+Owns: pay rate math, formatting, stats/streaks, Wrapped aggregates, achievements, takeover damages and portfolio, mode/category/receipt-style enums, theme palette.
 Does NOT Own: persistence, widgets (except theme data), state.
 Communicates With: data/database.dart (Session type only).
 Isolation Level: Strong
@@ -32,7 +32,7 @@ Isolation Level: Strong
 
 ## Timer
 
-Owns: clock in/out UI, live ticker, mode selection, today panel.
+Owns: clock in/out UI, live ticker, mode selection, today panel, takeover check-in sheet.
 Does NOT Own: session persistence, receipts, stats math.
 Communicates With: activeSessionProvider, sessionsProvider, receipt, ledger (ReceiptRow), paywall.
 Isolation Level: Moderate
@@ -46,7 +46,7 @@ Isolation Level: Moderate
 
 ## Ledger
 
-Owns: period stats view, receipt list, void, late paperwork form, debug seed button.
+Owns: period stats view, receipt list, void, late paperwork form, holdings (takeover portfolio) section, debug seed button.
 Does NOT Own: stats math, Wrapped.
 Communicates With: sessionsProvider, databaseProvider, receipt, wrapped, paywall.
 Isolation Level: Moderate

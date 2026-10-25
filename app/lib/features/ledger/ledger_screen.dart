@@ -12,6 +12,7 @@ import '../../state/providers.dart';
 import '../../widgets/payslip_parts.dart';
 import '../receipt/receipt_screen.dart';
 import '../wrapped/wrapped_screen.dart';
+import 'holdings_section.dart';
 import 'manual_log_screen.dart';
 
 class LedgerScreen extends ConsumerStatefulWidget {
@@ -116,6 +117,7 @@ class _LedgerScreenState extends ConsumerState<LedgerScreen> {
                 child: const Text('DEBUG: SEED FAKE YEAR'),
               ),
             ],
+            const HoldingsSection(),
             const DashedDivider(),
             Text('RECEIPTS  (tap to share, hold to void)',
                 style: TextStyle(color: faded)),
@@ -166,7 +168,8 @@ class ReceiptRow extends StatelessWidget {
       child: LineItem(
         '#${s.id.toString().padLeft(6, '0')} '
             '${DateFormat('MMM d').format(s.startedAt).toUpperCase()} '
-            '${s.mode.label} ${longDuration(Duration(milliseconds: s.durationMs))}',
+            '${s.businessName != null ? 'TAKEOVER' : s.mode.label} '
+            '${longDuration(Duration(milliseconds: s.durationMs))}',
         money(s.earned, currency),
         style: const TextStyle(fontSize: 13),
       ),

@@ -1,12 +1,12 @@
 # Fuck Corpo: project memory
 
-Satirical app that calculates how much your employer pays you while you poop, smoke, or eat on the clock. Android first (Flutter), plus a static website. Last updated 2026-10-05.
+Satirical app that calculates how much your employer pays you while you poop, smoke, or eat on the clock. Android first (Flutter), plus a static website. Last updated 2026-10-25.
 
 ## Current state
 
 | Area | Status |
 |---|---|
-| Android app (`app/`) | Feature complete for v1. 28 tests passing. Release AAB builds. |
+| Android app (`app/`) | v1 plus Hostile Takeovers. 37 tests passing. Release AAB builds. |
 | Website (`web/`) | Live at https://fuckcorpov2-web.vercel.app |
 | Play Store | Not submitted. Listing assets ready in `app/store_assets/play/`. |
 | iOS | Not started (needs a Mac or cloud build service). |
@@ -20,10 +20,12 @@ Satirical app that calculates how much your employer pays you while you poop, sm
 - **Money:** free core plus one-time Pro unlock ("promotion to Management"), placeholder price $2.99. Uses Google's `in_app_purchase` plugin (chosen over RevenueCat: one non-consumable product does not need a third-party account). Purchases are trusted client-side, no receipt server.
 - **Pay math:** hourly = amount / 3600 per second. Salary = amount / (hours per week x 52 x 3600). Website calculator uses the same formula.
 - **CEO comparison:** a hypothetical CEO on a $20M package paid around the clock. Framed as hypothetical on purpose, not a factual claim.
+- **Hostile Takeovers (2026-10-25):** throne sessions can be "takeovers" of another business. The user types the company name and picks an industry; no location permission, so the "nothing collected" privacy promise stands. Clocking out produces a damages invoice (playful utility estimates in `core/takeover.dart`) billed to that company. Holdings list on the Ledger is free; industry breakdown and takeover achievements are Pro. No map (would need location). Throne-only for now; late paperwork cannot log takeovers yet.
+- **Database:** schema v2 added nullable `business_name`, `business_category`, `damages` to `sessions`. Migration in `data/database.dart`, covered by a v1-to-v2 upgrade test. Any future column change needs a new schema version and migration step.
 
 ## App layout (`app/lib/`)
 
-- `core/`: pay rate math, formatting, stats and streaks, Wrapped stats, achievements, receipt styles, theme.
+- `core/`: pay rate math, formatting, stats and streaks, Wrapped stats, achievements, receipt styles, theme, takeover (categories, damages), portfolio.
 - `data/`: drift database (sessions), settings repository (prefs), CSV export, debug-only fake-year seeder.
 - `state/providers.dart`: Riverpod providers (profile, active session, Pro, receipt style, theme mode).
 - `features/`: onboarding (intake form), timer, receipt, ledger (+ late paperwork), share (card + capture), wrapped, pro (paywall, billing, perks).
@@ -33,7 +35,7 @@ Satirical app that calculates how much your employer pays you while you poop, sm
 ## Pro
 
 - Product ID `pro_unlock` (non-consumable). Must be created in Play Console > Monetize > In-app products.
-- Pro unlocks: Doomscroll, Fake Meeting, Coffee Run modes; 10 achievements; Gold Receipt, CEO Memo, Strike Poster styles; unhinged roast pack; CSV export.
+- Pro unlocks: Doomscroll, Fake Meeting, Coffee Run modes; 15 achievements; takeover stats by industry (Portfolio intel); Gold Receipt, CEO Memo, Strike Poster styles; unhinged roast pack; CSV export.
 - Purchases restore automatically at launch. Pending, canceled, and failed purchases never unlock.
 - Personal builds: `--dart-define=UNLOCK_PRO=true` grants Pro at compile time. Never use it for a Play upload.
 - Debug builds show "DEBUG: promote without paying", "DEBUG: seed fake year", and "DEBUG: demote" buttons. Hidden in release.
@@ -74,6 +76,7 @@ The first is run from `app/`; the bundle is for Play upload; the APK is the pers
 6. Pick a domain; then set absolute `og:image` URL, add sitemap, and put the store link and domain on share cards.
 7. Add a real contact email to `web/privacy.html` (currently a "coming soon" line) before Play submission.
 8. Optional later: app icon variants (Pro), iOS build.
+9. Takeover follow-ups: allow takeovers in late paperwork; consider an opt-in location map (needs privacy policy and data safety updates); update Play listing copy and screenshots to show takeovers.
 
 ## Gotchas
 

@@ -7,6 +7,8 @@ import '../../copy/roasts.dart';
 import '../../core/break_mode.dart';
 import '../../core/format.dart';
 import '../../core/stats.dart';
+import '../../core/takeover.dart';
+import '../../data/settings_repository.dart';
 import '../../state/providers.dart';
 import '../../widgets/payslip_parts.dart';
 import '../../widgets/pixel_ceo.dart';
@@ -14,6 +16,7 @@ import '../ledger/ledger_screen.dart';
 import '../onboarding/intake_form_screen.dart';
 import '../pro/paywall_screen.dart';
 import '../receipt/receipt_screen.dart';
+import 'takeover_sheet.dart';
 
 class TimerScreen extends ConsumerStatefulWidget {
   const TimerScreen({super.key});
@@ -24,6 +27,7 @@ class TimerScreen extends ConsumerStatefulWidget {
 
 class _TimerScreenState extends ConsumerState<TimerScreen> {
   BreakMode _selected = BreakMode.throne;
+  TakeoverTarget? _target;
   Timer? _ticker;
   int _lastAnger = -1;
   String _quote = '';
@@ -55,7 +59,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     setState(() => _busy = true);
     await ref
         .read(activeSessionProvider.notifier)
-        .start(_effective(_selected, ref.read(proProvider)));
+        .start(_effective(_selected, ref.read(proProvider)), target: _target);
     if (mounted) setState(() => _busy = false);
   }
 
@@ -63,7 +67,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     setState(() => _busy = true);
     final session = await ref.read(activeSessionProvider.notifier).stop();
     if (!mounted) return;
-    setState(() => _busy = false);
+    setState(() {
+      _busy = false;
+      _target = null;
+    });
     await Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => ReceiptScreen(session: session)),
     );
@@ -72,6 +79,54 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
   /// Falls back to the throne if Pro was revoked while a Pro mode was picked.
   static BreakMode _effective(BreakMode m, bool isPro) =>
       m.pro && !isPro ? BreakMode.throne : m;
+
+  static String _short(String name) =>
+      name.length <= 16 ? name : '${name.substring(0, 15).trimRight()}...';
+
+  Future<void> _pickTarget() async {
+    final target = await TakeoverSheet.open(context, initial: _target);
+    if (target != null && mounted) setState(() => _target = target);
+  }
+
+  Widget _location(ActiveSession? active, BreakMode mode, Duration elapsed,
+      String currency) {
+    final faded = Theme.of(context).colorScheme.onSurfaceVariant;
+    if (active != null) {
+      final t = active.target;
+      if (t == null) return const SizedBox.shrink();
+      return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: LineItem(
+          'BILLED TO ${t.name.toUpperCase()}',
+          money(Damages(elapsed).total, currency, decimals: 4),
+          style: TextStyle(color: faded),
+        ),
+      );
+    }
+    if (mode != BreakMode.throne) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          ModeChip(
+            label: 'MY JOB',
+            selected: _target == null,
+            onTap: () => setState(() => _target = null),
+          ),
+          ModeChip(
+            label: _target == null
+                ? 'HOSTILE TAKEOVER'
+                : 'TAKEOVER: ${_short(_target!.name).toUpperCase()}',
+            selected: _target != null,
+            onTap: _pickTarget,
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +208,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                     ),
                 ],
               ),
+              _location(active, mode, elapsed, profile.currency),
               const DashedDivider(),
               const Expanded(child: _TodayPanel()),
               const SizedBox(height: 12),

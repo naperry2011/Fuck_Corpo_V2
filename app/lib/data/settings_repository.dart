@@ -3,12 +3,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../core/break_mode.dart';
 import '../core/pay_profile.dart';
 import '../core/rate.dart';
+import '../core/takeover.dart';
 
 class ActiveSession {
-  const ActiveSession({required this.mode, required this.startedAt});
+  const ActiveSession({
+    required this.mode,
+    required this.startedAt,
+    this.target,
+  });
 
   final BreakMode mode;
   final DateTime startedAt;
+  final TakeoverTarget? target;
 }
 
 class SettingsRepository {
@@ -23,6 +29,8 @@ class SettingsRepository {
   static const _boss = 'boss_name';
   static const _activeMode = 'active_mode';
   static const _activeStart = 'active_started_ms';
+  static const _activeBusiness = 'active_business';
+  static const _activeCategory = 'active_business_category';
 
   PayProfile? loadProfile() {
     final type = _prefs.getString(_payType);
@@ -69,19 +77,39 @@ class SettingsRepository {
     final mode = _prefs.getString(_activeMode);
     final start = _prefs.getInt(_activeStart);
     if (mode == null || start == null) return null;
+    final business = _prefs.getString(_activeBusiness);
+    final category = _prefs.getString(_activeCategory);
     return ActiveSession(
       mode: BreakMode.values.byName(mode),
       startedAt: DateTime.fromMillisecondsSinceEpoch(start),
+      target: business == null
+          ? null
+          : TakeoverTarget(
+              name: business,
+              category: BusinessCategory.values.firstWhere(
+                  (c) => c.name == category,
+                  orElse: () => BusinessCategory.other),
+            ),
     );
   }
 
   Future<void> saveActive(ActiveSession s) async {
     await _prefs.setString(_activeMode, s.mode.name);
     await _prefs.setInt(_activeStart, s.startedAt.millisecondsSinceEpoch);
+    final t = s.target;
+    if (t == null) {
+      await _prefs.remove(_activeBusiness);
+      await _prefs.remove(_activeCategory);
+    } else {
+      await _prefs.setString(_activeBusiness, t.name);
+      await _prefs.setString(_activeCategory, t.category.name);
+    }
   }
 
   Future<void> clearActive() async {
     await _prefs.remove(_activeMode);
     await _prefs.remove(_activeStart);
+    await _prefs.remove(_activeBusiness);
+    await _prefs.remove(_activeCategory);
   }
 }

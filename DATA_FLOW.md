@@ -1,6 +1,6 @@
 # Data Flow
 
-Generated: 2026-10-05 | commit be5fb09 | by /code-map
+Generated: 2026-10-25 | commit dc30960 | by /code-map
 
 No server. All app data stays on the device.
 
@@ -19,6 +19,14 @@ Transport: ActiveSessionNotifier
 Processor: core/rate.dart (earnings), SettingsRepository (active session survives app kill)
 Storage: shared_preferences (in-progress), drift `sessions` table (on clock out)
 Downstream Consumers: ReceiptScreen, sessionsProvider
+
+## Hostile Takeover
+
+Source: TimerScreen -> TakeoverSheet (typed company + category)
+Transport: ActiveSessionNotifier.start(target)
+Processor: core/takeover.dart Damages (on clock out)
+Storage: shared_preferences (in-progress target), drift `sessions` columns business_name, business_category, damages
+Downstream Consumers: InvoiceCard (ReceiptScreen), core/portfolio.dart -> HoldingsSection, Wrapped takeover slide, takeover achievements, CSV export
 
 ## Manual Log
 

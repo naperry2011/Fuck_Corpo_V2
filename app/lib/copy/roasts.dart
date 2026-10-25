@@ -56,11 +56,25 @@ const unhingedRoasts = [
   'You did not quiet quit. You loudly sat.',
 ];
 
+const takeoverRoasts = [
+  'Their toilet. Their water. Your victory.',
+  'Hostile takeover complete. No board approval needed.',
+  'You left a deposit. They left no receipt. Now they have one.',
+  'Their shareholders will feel this one in Q4.',
+  'Market share acquired. One stall at a time.',
+  'Customers only? You were a customer of the porcelain.',
+];
+
+String takeoverRoast() => pick(takeoverRoasts);
+
 String receiptRoast(BreakMode mode, {required bool isPro}) =>
     pick([...receiptRoasts[mode]!, if (isPro) ...unhingedRoasts]);
 
 const shareCaption =
     'Corpo paid me to do this. #FuckCorpo #PaidToPoop';
+
+const takeoverCaption =
+    'Hostile takeover complete. Invoice sent. #FuckCorpo #HostileTakeover';
 
 const wrappedCaption =
     'My Corpo Wrapped is in. Wages stolen back. #FuckCorpo #CorpoWrapped';

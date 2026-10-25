@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart' show ThemeMode;
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/break_mode.dart';
 import '../core/receipt_styles.dart';
+import '../core/takeover.dart';
 import '../core/pay_profile.dart';
 import '../data/database.dart';
 import '../data/settings_repository.dart';
@@ -104,8 +106,13 @@ class ActiveSessionNotifier extends Notifier<ActiveSession?> {
   @override
   ActiveSession? build() => ref.watch(settingsProvider).loadActive();
 
-  Future<void> start(BreakMode mode) async {
-    final session = ActiveSession(mode: mode, startedAt: DateTime.now());
+  /// [target] only applies to throne sessions; other modes ignore it.
+  Future<void> start(BreakMode mode, {TakeoverTarget? target}) async {
+    final session = ActiveSession(
+      mode: mode,
+      startedAt: DateTime.now(),
+      target: mode == BreakMode.throne ? target : null,
+    );
     await ref.read(settingsProvider).saveActive(session);
     state = session;
   }
@@ -121,6 +128,10 @@ class ActiveSessionNotifier extends Notifier<ActiveSession?> {
             startedAt: active.startedAt,
             durationMs: elapsed.inMilliseconds,
             earned: rate.earned(elapsed),
+            businessName: Value(active.target?.name),
+            businessCategory: Value(active.target?.category),
+            damages: Value(
+                active.target == null ? null : Damages(elapsed).total),
           ),
         );
     await ref.read(settingsProvider).clearActive();

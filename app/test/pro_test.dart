@@ -55,8 +55,9 @@ void main() {
       ),
     ]);
     final lines = csv.trim().split('\n');
-    expect(lines.first, 'receipt,mode,started_at,duration_seconds,earned');
-    expect(lines[1], '7,FAKE MEETING,2026-10-05T14:30:00.000,91,1.2346');
+    expect(lines.first,
+        'receipt,mode,started_at,duration_seconds,earned,business,industry,damages');
+    expect(lines[1], '7,FAKE MEETING,2026-10-05T14:30:00.000,91,1.2346,,,');
   });
 
   test('pro unlock persists and gates receipt styles', () async {

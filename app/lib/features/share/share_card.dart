@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/format.dart';
 import '../../core/receipt_styles.dart';
+import '../../core/takeover.dart';
 import '../../core/theme.dart';
 import '../../data/database.dart';
 import '../../widgets/payslip_parts.dart';
@@ -131,6 +132,72 @@ class ShareCard extends StatelessWidget {
             children: [
               PixelCeo(anger: angerFor(s.earned), size: 64),
               const Stamp('PAID IN FULL', fontSize: 15),
+            ],
+          ),
+          const Spacer(),
+          Text(roast, textAlign: TextAlign.center, style: small),
+        ],
+      ),
+    );
+  }
+}
+
+/// Takeover sessions: an invoice billed to the business that got acquired.
+class InvoiceCard extends StatelessWidget {
+  const InvoiceCard({
+    super.key,
+    required this.session,
+    required this.currency,
+    required this.roast,
+    this.style = ReceiptStyle.classic,
+  });
+
+  final Session session;
+  final String currency;
+  final String roast;
+  final ReceiptStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = session;
+    final duration = Duration(milliseconds: s.durationMs);
+    final damages = Damages(duration);
+    const small = TextStyle(fontSize: 11);
+    const line = TextStyle(fontSize: 11);
+
+    return ReceiptFrame(
+      style: style,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            '${style.header}\n'
+            'TAKEOVER INVOICE #T-${s.id.toString().padLeft(6, '0')} · '
+            '${DateFormat('MMM d, y').format(s.startedAt).toUpperCase()}',
+            textAlign: TextAlign.center,
+            style: small,
+          ),
+          const DashedDivider(),
+          LineItem('BILL TO', s.businessName ?? '', style: line),
+          const DashedDivider(),
+          for (final d in damages.lines)
+            LineItem(d.label, money(d.amount, currency), style: line),
+          const LineItem('Emotional damage, next guy', 'Priceless',
+              style: line),
+          const DashedDivider(),
+          LineItem(
+            'DAMAGES',
+            money(s.damages ?? damages.total, currency),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          LineItem('Your boss also paid', money(s.earned, currency),
+              style: line.copyWith(color: style.faded)),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              PixelCeo(anger: angerFor(s.earned), size: 40),
+              const Stamp('ACQUIRED', fontSize: 15),
             ],
           ),
           const Spacer(),

@@ -61,6 +61,40 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
     type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _businessNameMeta = const VerificationMeta(
+    'businessName',
+  );
+  @override
+  late final GeneratedColumn<String> businessName = GeneratedColumn<String>(
+    'business_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<BusinessCategory?, String>
+  businessCategory =
+      GeneratedColumn<String>(
+        'business_category',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<BusinessCategory?>(
+        $SessionsTable.$converterbusinessCategoryn,
+      );
+  static const VerificationMeta _damagesMeta = const VerificationMeta(
+    'damages',
+  );
+  @override
+  late final GeneratedColumn<double> damages = GeneratedColumn<double>(
+    'damages',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -68,6 +102,9 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
     startedAt,
     durationMs,
     earned,
+    businessName,
+    businessCategory,
+    damages,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -108,6 +145,21 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
     } else if (isInserting) {
       context.missing(_earnedMeta);
     }
+    if (data.containsKey('business_name')) {
+      context.handle(
+        _businessNameMeta,
+        businessName.isAcceptableOrUnknown(
+          data['business_name']!,
+          _businessNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('damages')) {
+      context.handle(
+        _damagesMeta,
+        damages.isAcceptableOrUnknown(data['damages']!, _damagesMeta),
+      );
+    }
     return context;
   }
 
@@ -139,6 +191,20 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
         DriftSqlType.double,
         data['${effectivePrefix}earned'],
       )!,
+      businessName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_name'],
+      ),
+      businessCategory: $SessionsTable.$converterbusinessCategoryn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}business_category'],
+        ),
+      ),
+      damages: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}damages'],
+      ),
     );
   }
 
@@ -149,6 +215,14 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
 
   static JsonTypeConverter2<BreakMode, String, String> $convertermode =
       const EnumNameConverter<BreakMode>(BreakMode.values);
+  static JsonTypeConverter2<BusinessCategory, String, String>
+  $converterbusinessCategory = const EnumNameConverter<BusinessCategory>(
+    BusinessCategory.values,
+  );
+  static JsonTypeConverter2<BusinessCategory?, String?, String?>
+  $converterbusinessCategoryn = JsonTypeConverter2.asNullable(
+    $converterbusinessCategory,
+  );
 }
 
 class Session extends DataClass implements Insertable<Session> {
@@ -157,12 +231,18 @@ class Session extends DataClass implements Insertable<Session> {
   final DateTime startedAt;
   final int durationMs;
   final double earned;
+  final String? businessName;
+  final BusinessCategory? businessCategory;
+  final double? damages;
   const Session({
     required this.id,
     required this.mode,
     required this.startedAt,
     required this.durationMs,
     required this.earned,
+    this.businessName,
+    this.businessCategory,
+    this.damages,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -174,6 +254,17 @@ class Session extends DataClass implements Insertable<Session> {
     map['started_at'] = Variable<DateTime>(startedAt);
     map['duration_ms'] = Variable<int>(durationMs);
     map['earned'] = Variable<double>(earned);
+    if (!nullToAbsent || businessName != null) {
+      map['business_name'] = Variable<String>(businessName);
+    }
+    if (!nullToAbsent || businessCategory != null) {
+      map['business_category'] = Variable<String>(
+        $SessionsTable.$converterbusinessCategoryn.toSql(businessCategory),
+      );
+    }
+    if (!nullToAbsent || damages != null) {
+      map['damages'] = Variable<double>(damages);
+    }
     return map;
   }
 
@@ -184,6 +275,15 @@ class Session extends DataClass implements Insertable<Session> {
       startedAt: Value(startedAt),
       durationMs: Value(durationMs),
       earned: Value(earned),
+      businessName: businessName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(businessName),
+      businessCategory: businessCategory == null && nullToAbsent
+          ? const Value.absent()
+          : Value(businessCategory),
+      damages: damages == null && nullToAbsent
+          ? const Value.absent()
+          : Value(damages),
     );
   }
 
@@ -200,6 +300,11 @@ class Session extends DataClass implements Insertable<Session> {
       startedAt: serializer.fromJson<DateTime>(json['startedAt']),
       durationMs: serializer.fromJson<int>(json['durationMs']),
       earned: serializer.fromJson<double>(json['earned']),
+      businessName: serializer.fromJson<String?>(json['businessName']),
+      businessCategory: $SessionsTable.$converterbusinessCategoryn.fromJson(
+        serializer.fromJson<String?>(json['businessCategory']),
+      ),
+      damages: serializer.fromJson<double?>(json['damages']),
     );
   }
   @override
@@ -213,6 +318,11 @@ class Session extends DataClass implements Insertable<Session> {
       'startedAt': serializer.toJson<DateTime>(startedAt),
       'durationMs': serializer.toJson<int>(durationMs),
       'earned': serializer.toJson<double>(earned),
+      'businessName': serializer.toJson<String?>(businessName),
+      'businessCategory': serializer.toJson<String?>(
+        $SessionsTable.$converterbusinessCategoryn.toJson(businessCategory),
+      ),
+      'damages': serializer.toJson<double?>(damages),
     };
   }
 
@@ -222,12 +332,20 @@ class Session extends DataClass implements Insertable<Session> {
     DateTime? startedAt,
     int? durationMs,
     double? earned,
+    Value<String?> businessName = const Value.absent(),
+    Value<BusinessCategory?> businessCategory = const Value.absent(),
+    Value<double?> damages = const Value.absent(),
   }) => Session(
     id: id ?? this.id,
     mode: mode ?? this.mode,
     startedAt: startedAt ?? this.startedAt,
     durationMs: durationMs ?? this.durationMs,
     earned: earned ?? this.earned,
+    businessName: businessName.present ? businessName.value : this.businessName,
+    businessCategory: businessCategory.present
+        ? businessCategory.value
+        : this.businessCategory,
+    damages: damages.present ? damages.value : this.damages,
   );
   Session copyWithCompanion(SessionsCompanion data) {
     return Session(
@@ -238,6 +356,13 @@ class Session extends DataClass implements Insertable<Session> {
           ? data.durationMs.value
           : this.durationMs,
       earned: data.earned.present ? data.earned.value : this.earned,
+      businessName: data.businessName.present
+          ? data.businessName.value
+          : this.businessName,
+      businessCategory: data.businessCategory.present
+          ? data.businessCategory.value
+          : this.businessCategory,
+      damages: data.damages.present ? data.damages.value : this.damages,
     );
   }
 
@@ -248,13 +373,25 @@ class Session extends DataClass implements Insertable<Session> {
           ..write('mode: $mode, ')
           ..write('startedAt: $startedAt, ')
           ..write('durationMs: $durationMs, ')
-          ..write('earned: $earned')
+          ..write('earned: $earned, ')
+          ..write('businessName: $businessName, ')
+          ..write('businessCategory: $businessCategory, ')
+          ..write('damages: $damages')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, mode, startedAt, durationMs, earned);
+  int get hashCode => Object.hash(
+    id,
+    mode,
+    startedAt,
+    durationMs,
+    earned,
+    businessName,
+    businessCategory,
+    damages,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -263,7 +400,10 @@ class Session extends DataClass implements Insertable<Session> {
           other.mode == this.mode &&
           other.startedAt == this.startedAt &&
           other.durationMs == this.durationMs &&
-          other.earned == this.earned);
+          other.earned == this.earned &&
+          other.businessName == this.businessName &&
+          other.businessCategory == this.businessCategory &&
+          other.damages == this.damages);
 }
 
 class SessionsCompanion extends UpdateCompanion<Session> {
@@ -272,12 +412,18 @@ class SessionsCompanion extends UpdateCompanion<Session> {
   final Value<DateTime> startedAt;
   final Value<int> durationMs;
   final Value<double> earned;
+  final Value<String?> businessName;
+  final Value<BusinessCategory?> businessCategory;
+  final Value<double?> damages;
   const SessionsCompanion({
     this.id = const Value.absent(),
     this.mode = const Value.absent(),
     this.startedAt = const Value.absent(),
     this.durationMs = const Value.absent(),
     this.earned = const Value.absent(),
+    this.businessName = const Value.absent(),
+    this.businessCategory = const Value.absent(),
+    this.damages = const Value.absent(),
   });
   SessionsCompanion.insert({
     this.id = const Value.absent(),
@@ -285,6 +431,9 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     required DateTime startedAt,
     required int durationMs,
     required double earned,
+    this.businessName = const Value.absent(),
+    this.businessCategory = const Value.absent(),
+    this.damages = const Value.absent(),
   }) : mode = Value(mode),
        startedAt = Value(startedAt),
        durationMs = Value(durationMs),
@@ -295,6 +444,9 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     Expression<DateTime>? startedAt,
     Expression<int>? durationMs,
     Expression<double>? earned,
+    Expression<String>? businessName,
+    Expression<String>? businessCategory,
+    Expression<double>? damages,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -302,6 +454,9 @@ class SessionsCompanion extends UpdateCompanion<Session> {
       if (startedAt != null) 'started_at': startedAt,
       if (durationMs != null) 'duration_ms': durationMs,
       if (earned != null) 'earned': earned,
+      if (businessName != null) 'business_name': businessName,
+      if (businessCategory != null) 'business_category': businessCategory,
+      if (damages != null) 'damages': damages,
     });
   }
 
@@ -311,6 +466,9 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     Value<DateTime>? startedAt,
     Value<int>? durationMs,
     Value<double>? earned,
+    Value<String?>? businessName,
+    Value<BusinessCategory?>? businessCategory,
+    Value<double?>? damages,
   }) {
     return SessionsCompanion(
       id: id ?? this.id,
@@ -318,6 +476,9 @@ class SessionsCompanion extends UpdateCompanion<Session> {
       startedAt: startedAt ?? this.startedAt,
       durationMs: durationMs ?? this.durationMs,
       earned: earned ?? this.earned,
+      businessName: businessName ?? this.businessName,
+      businessCategory: businessCategory ?? this.businessCategory,
+      damages: damages ?? this.damages,
     );
   }
 
@@ -341,6 +502,19 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     if (earned.present) {
       map['earned'] = Variable<double>(earned.value);
     }
+    if (businessName.present) {
+      map['business_name'] = Variable<String>(businessName.value);
+    }
+    if (businessCategory.present) {
+      map['business_category'] = Variable<String>(
+        $SessionsTable.$converterbusinessCategoryn.toSql(
+          businessCategory.value,
+        ),
+      );
+    }
+    if (damages.present) {
+      map['damages'] = Variable<double>(damages.value);
+    }
     return map;
   }
 
@@ -351,7 +525,10 @@ class SessionsCompanion extends UpdateCompanion<Session> {
           ..write('mode: $mode, ')
           ..write('startedAt: $startedAt, ')
           ..write('durationMs: $durationMs, ')
-          ..write('earned: $earned')
+          ..write('earned: $earned, ')
+          ..write('businessName: $businessName, ')
+          ..write('businessCategory: $businessCategory, ')
+          ..write('damages: $damages')
           ..write(')'))
         .toString();
   }
@@ -375,6 +552,9 @@ typedef $$SessionsTableCreateCompanionBuilder =
       required DateTime startedAt,
       required int durationMs,
       required double earned,
+      Value<String?> businessName,
+      Value<BusinessCategory?> businessCategory,
+      Value<double?> damages,
     });
 typedef $$SessionsTableUpdateCompanionBuilder =
     SessionsCompanion Function({
@@ -383,6 +563,9 @@ typedef $$SessionsTableUpdateCompanionBuilder =
       Value<DateTime> startedAt,
       Value<int> durationMs,
       Value<double> earned,
+      Value<String?> businessName,
+      Value<BusinessCategory?> businessCategory,
+      Value<double?> damages,
     });
 
 class $$SessionsTableFilterComposer
@@ -417,6 +600,22 @@ class $$SessionsTableFilterComposer
 
   ColumnFilters<double> get earned => $composableBuilder(
     column: $table.earned,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get businessName => $composableBuilder(
+    column: $table.businessName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<BusinessCategory?, BusinessCategory, String>
+  get businessCategory => $composableBuilder(
+    column: $table.businessCategory,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<double> get damages => $composableBuilder(
+    column: $table.damages,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -454,6 +653,21 @@ class $$SessionsTableOrderingComposer
     column: $table.earned,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get businessName => $composableBuilder(
+    column: $table.businessName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get businessCategory => $composableBuilder(
+    column: $table.businessCategory,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get damages => $composableBuilder(
+    column: $table.damages,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$SessionsTableAnnotationComposer
@@ -481,6 +695,20 @@ class $$SessionsTableAnnotationComposer
 
   GeneratedColumn<double> get earned =>
       $composableBuilder(column: $table.earned, builder: (column) => column);
+
+  GeneratedColumn<String> get businessName => $composableBuilder(
+    column: $table.businessName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<BusinessCategory?, String>
+  get businessCategory => $composableBuilder(
+    column: $table.businessCategory,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get damages =>
+      $composableBuilder(column: $table.damages, builder: (column) => column);
 }
 
 class $$SessionsTableTableManager
@@ -516,12 +744,19 @@ class $$SessionsTableTableManager
                 Value<DateTime> startedAt = const Value.absent(),
                 Value<int> durationMs = const Value.absent(),
                 Value<double> earned = const Value.absent(),
+                Value<String?> businessName = const Value.absent(),
+                Value<BusinessCategory?> businessCategory =
+                    const Value.absent(),
+                Value<double?> damages = const Value.absent(),
               }) => SessionsCompanion(
                 id: id,
                 mode: mode,
                 startedAt: startedAt,
                 durationMs: durationMs,
                 earned: earned,
+                businessName: businessName,
+                businessCategory: businessCategory,
+                damages: damages,
               ),
           createCompanionCallback:
               ({
@@ -530,12 +765,19 @@ class $$SessionsTableTableManager
                 required DateTime startedAt,
                 required int durationMs,
                 required double earned,
+                Value<String?> businessName = const Value.absent(),
+                Value<BusinessCategory?> businessCategory =
+                    const Value.absent(),
+                Value<double?> damages = const Value.absent(),
               }) => SessionsCompanion.insert(
                 id: id,
                 mode: mode,
                 startedAt: startedAt,
                 durationMs: durationMs,
                 earned: earned,
+                businessName: businessName,
+                businessCategory: businessCategory,
+                damages: damages,
               ),
           withReferenceMapper: (p0) => p0
               .map(

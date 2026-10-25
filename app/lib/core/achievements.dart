@@ -1,6 +1,8 @@
 import '../data/database.dart';
 import 'break_mode.dart';
+import 'portfolio.dart';
 import 'stats.dart';
+import 'takeover.dart';
 
 class Achievement {
   const Achievement(this.title, this.description, this.test);
@@ -45,4 +47,17 @@ final achievements = <Achievement>[
   Achievement('UNION REP', 'Log 100 sessions.', (s) => s.length >= 100),
   Achievement('GRAND LARCENY', 'Reclaim \$1,000 total.',
       (s) => _total(s) >= 1000),
+  Achievement('HOSTILE TAKEOVER', 'Acquire your first company.',
+      (s) => Portfolio.from(s).takeovers >= 1),
+  Achievement('FRANCHISE TOUR', 'Acquire 5 different coffee spots.',
+      (s) => _companiesIn(s, BusinessCategory.coffee) >= 5),
+  Achievement('BANK RUN', 'Take over a bank bathroom.',
+      (s) => _companiesIn(s, BusinessCategory.bank) >= 1),
+  Achievement('REPEAT OFFENDER', 'Acquire the same company 5 times.',
+      (s) => (Portfolio.from(s).favorite?.takeovers ?? 0) >= 5),
+  Achievement('FORTUNE 500', 'Acquire 10 different companies.',
+      (s) => Portfolio.from(s).companies >= 10),
 ];
+
+int _companiesIn(List<Session> s, BusinessCategory category) =>
+    Portfolio.from(s).holdings.where((h) => h.category == category).length;

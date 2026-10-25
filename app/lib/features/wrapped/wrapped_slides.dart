@@ -118,6 +118,21 @@ List<Widget> buildWrappedSlides(WrappedStats w, PayProfile profile,
           headline: w.bestStreak == 1 ? '1 DAY' : '${w.bestStreak} DAYS',
           body: 'Days in a row of taking it back. Unbroken. Unbothered.',
         ),
+    if (!w.portfolio.isEmpty)
+      (box) => _Slide(
+            style: style,
+            form: form,
+            box: box,
+            kicker: 'HOSTILE TAKEOVERS',
+            headline: w.portfolio.companies == 1
+                ? '1 COMPANY'
+                : '${w.portfolio.companies} COMPANIES',
+            body: 'Acquired ${w.portfolio.takeovers} times. Favorite target: '
+                '${w.portfolio.favorite!.name} '
+                '(${w.portfolio.favorite!.takeovers}x). '
+                'Damages billed: ${money(w.portfolio.damages, cur)}.',
+            extra: const Stamp('ACQUIRED', fontSize: 16),
+          ),
     (box) => _Slide(
           style: style,
           form: form,
@@ -234,6 +249,8 @@ class _Summary extends StatelessWidget {
               (w.time.inMinutes / 60).toStringAsFixed(1)),
           LineItem('Longest ${longest.mode.receiptItem.toLowerCase()}',
               longDuration(Duration(milliseconds: longest.durationMs))),
+          if (!w.portfolio.isEmpty)
+            LineItem('Companies acquired', '${w.portfolio.companies}'),
           const DashedDivider(),
           const Text('TOTAL RECLAIMED'),
           FittedBox(

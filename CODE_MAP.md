@@ -1,6 +1,6 @@
 # Code Map
 
-Generated: 2026-10-05 | commit be5fb09 | by /code-map
+Generated: 2026-10-25 | commit dc30960 | by /code-map
 
 Two independent parts: `app/` (Flutter, Android) and `web/` (static site). No backend.
 
@@ -66,7 +66,7 @@ Category: UI
 
 Primary Files:
 * app/lib/features/receipt/receipt_screen.dart
-* app/lib/features/share/share_card.dart (ReceiptFrame, ShareCard)
+* app/lib/features/share/share_card.dart (ReceiptFrame, ShareCard, InvoiceCard)
 * app/lib/features/share/share_service.dart
 
 Supporting Files:
@@ -75,6 +75,22 @@ Supporting Files:
 
 External Integrations:
 * share_plus (Android share sheet), path_provider (temp files)
+
+## Hostile Takeovers
+
+Category: UI / Other
+
+Primary Files:
+* app/lib/core/takeover.dart (BusinessCategory, TakeoverTarget, Damages)
+* app/lib/core/portfolio.dart
+* app/lib/features/timer/takeover_sheet.dart
+* app/lib/features/ledger/holdings_section.dart
+
+Supporting Files:
+* app/lib/features/share/share_card.dart (InvoiceCard)
+* app/lib/data/database.dart (schema v2 takeover columns + migration)
+* app/lib/data/settings_repository.dart (in-progress target)
+* app/lib/core/achievements.dart (takeover achievements)
 
 ## Ledger, Stats, Manual Log
 
