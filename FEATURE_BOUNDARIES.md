@@ -1,10 +1,10 @@
 # Feature Boundaries
 
-Generated: 2026-10-25 | commit dc30960 | by /code-map
+Generated: 2026-11-01 | commit c435631 | by /code-map
 
 ## Core (app/lib/core)
 
-Owns: pay rate math, formatting, stats/streaks, Wrapped aggregates, achievements, takeover damages and portfolio, mode/category/receipt-style enums, theme palette.
+Owns: pay rate math, formatting, stats/streaks, Wrapped aggregates, achievements, takeover damages and portfolio, mode/category/receipt-style enums, theme palette, edition copy.
 Does NOT Own: persistence, widgets (except theme data), state.
 Communicates With: data/database.dart (Session type only).
 Isolation Level: Strong

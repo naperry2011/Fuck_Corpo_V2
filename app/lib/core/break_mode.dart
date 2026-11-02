@@ -1,5 +1,7 @@
+import 'edition.dart';
+
 enum BreakMode {
-  throne('THRONE', 'EARNED WHILE SHITTING', 'Corporate dump'),
+  throne('THRONE', Edition.throneHeadline, 'Corporate dump'),
   smoke('SMOKE', 'EARNED WHILE SMOKING', 'Smoke break'),
   lunch('LUNCH', 'EARNED WHILE EATING', 'Lunch heist'),
   doomscroll('DOOMSCROLL', 'EARNED WHILE SCROLLING', 'Doomscroll session',

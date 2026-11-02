@@ -58,6 +58,7 @@ dev_dependencies:
   build_runner: ^2.15.1
   image: ^4.10.1
 flutter:
+  default-flavor: play
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/edition.dart';
 import '../../core/format.dart';
 import '../../core/receipt_styles.dart';
 import '../../core/takeover.dart';
@@ -61,7 +62,7 @@ class ReceiptFrame extends StatelessWidget {
                   height: 34,
                   child: Center(
                     child: Text(
-                      'FUCK CORPO · GET PAID TO POOP',
+                      '${Edition.brand} · GET PAID TO POOP',
                       style: TextStyle(
                         fontFamily: Payslip.fontFamily,
                         color: style.footer,

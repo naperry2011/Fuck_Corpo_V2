@@ -9,6 +9,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:fcorpo/core/edition.dart';
 import 'package:fcorpo/core/theme.dart';
 import 'package:fcorpo/widgets/payslip_parts.dart';
 import 'package:fcorpo/widgets/pixel_ceo.dart';
@@ -26,12 +27,13 @@ const _raw = 'store_assets/raw';
 /// store metadata gets stricter review than in-app content.
 const _captions = {
   '1': 'YOUR BOSS PAYS YOU\nTO POOP. WATCH IT TICK.',
-  '2': 'EVERY DUMP GETS\nA RECEIPT.',
-  '3': 'TRACK EVERY\nSTOLEN MINUTE.',
-  '4': 'YOUR YEAR-END\nW-2(ISH).',
-  '5': 'WAGES STOLEN BACK,\nAUDITED BY NOBODY.',
-  '6': 'UNLOCK MOGUL.\nBECOME UNION REP.',
-  '7': 'FOUR RECEIPT STYLES.\nZERO SHAME.',
+  '2': 'HOSTILE TAKEOVER.\nBILL THE COMPANY.',
+  '3': 'EVERY DUMP GETS\nA RECEIPT.',
+  '4': 'TRACK EVERY\nSTOLEN MINUTE.',
+  '5': 'BUILD YOUR\nACQUISITIONS PORTFOLIO.',
+  '6': 'WAGES STOLEN BACK,\nAUDITED BY NOBODY.',
+  '7': 'UNLOCK MOGUL.\nBECOME UNION REP.',
+  '8': 'FOUR RECEIPT STYLES.\nZERO SHAME.',
 };
 
 Future<img.Image> _render(WidgetTester tester, Size size, Widget child) async {
@@ -151,7 +153,7 @@ void main() {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('F*CK CORPO',
+                      Text(Edition.brand,
                           style: paper.copyWith(
                               fontSize: 24, letterSpacing: 6)),
                       const SizedBox(height: 12),

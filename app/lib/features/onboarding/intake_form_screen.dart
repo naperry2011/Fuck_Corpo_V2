@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/edition.dart';
 import '../../core/pay_profile.dart';
 import '../../core/rate.dart';
 import '../../state/providers.dart';
@@ -84,7 +85,7 @@ class _IntakeFormScreenState extends ConsumerState<IntakeFormScreen> {
           child: ListView(
             padding: const EdgeInsets.all(24),
             children: [
-              const Text('FUCK CORPO INC.\nEMPLOYEE INTAKE FORM',
+              const Text('${Edition.brand} INC.\nEMPLOYEE INTAKE FORM',
                   textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
               const DashedDivider(),
               Text('PAY TYPE', style: TextStyle(color: faded)),
@@ -129,7 +130,7 @@ class _IntakeFormScreenState extends ConsumerState<IntakeFormScreen> {
                 inputFormatters: numberInput,
                 validator: (v) => _positive(v, max: 168),
                 decoration: const InputDecoration(
-                  labelText: 'HOURS YOU GIVE THESE BASTARDS',
+                  labelText: Edition.hoursLabel,
                   suffixText: '/ week',
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../copy/roasts.dart';
 import '../../core/break_mode.dart';
+import '../../core/edition.dart';
 import '../../core/format.dart';
 import '../../core/pay_profile.dart';
 import '../../core/receipt_styles.dart';
@@ -53,7 +54,7 @@ List<Widget> buildWrappedSlides(WrappedStats w, PayProfile profile,
           style: style,
           form: form,
           box: box,
-          kicker: 'FUCK CORPO',
+          kicker: Edition.brand,
           headline: 'WRAPPED\n${w.year}',
           body: 'A year of stealing your time back. Audited by nobody.',
           extra: const Stamp('CONFIDENTIAL', fontSize: 16),

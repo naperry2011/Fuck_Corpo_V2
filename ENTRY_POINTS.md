@@ -1,6 +1,6 @@
 # Entry Points
 
-Generated: 2026-10-05 | commit be5fb09 | by /code-map
+Generated: 2026-11-01 | commit c435631 | by /code-map
 
 ## Flutter App
 
@@ -47,8 +47,8 @@ Depends On: lib/
 ## Build Commands
 
 Path: app/ (Flutter CLI)
-Responsibility: Play bundle and personal APK.
-Invokes: `flutter build appbundle --release`; `flutter build apk --release --dart-define=UNLOCK_PRO=true`
+Responsibility: Play bundle (default `play` flavor) and uncut APK.
+Invokes: `flutter build appbundle --release`; `flutter build apk --release --flavor uncut --dart-define=EDITION=uncut`
 Depends On: app/android/key.properties (optional; falls back to debug key)
 
 ## Website

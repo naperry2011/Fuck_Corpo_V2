@@ -1,6 +1,6 @@
 # Import Graph Summary
 
-Generated: 2026-10-05 | commit be5fb09 | by /code-map
+Generated: 2026-11-01 | commit c435631 | by /code-map
 
 Scope: app/lib. web/ has no module graph (one script).
 
@@ -10,6 +10,7 @@ Scope: app/lib. web/ has no module graph (one script).
 * app/lib/data/database.dart (Session type used by core/stats, core/wrapped, core/achievements, csv_export, share, ledger, receipt)
 * app/lib/core/break_mode.dart (modes used across core, data, and all session UIs)
 * app/lib/core/format.dart (money/duration formatting, most UIs)
+* app/lib/core/edition.dart (brand copy; core, copy, state, main, most screens)
 * app/lib/widgets/payslip_parts.dart (shared UI parts, nearly every screen)
 * app/lib/core/theme.dart (Payslip palette; theme, share card, store tool)
 

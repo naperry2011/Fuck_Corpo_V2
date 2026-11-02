@@ -1,6 +1,6 @@
 # Code Map
 
-Generated: 2026-10-25 | commit dc30960 | by /code-map
+Generated: 2026-11-01 | commit c435631 | by /code-map
 
 Two independent parts: `app/` (Flutter, Android) and `web/` (static site). No backend.
 
@@ -133,12 +133,17 @@ Supporting Files:
 External Integrations:
 * Google Play Billing via in_app_purchase (product `pro_unlock`)
 
-## Copy
+## Copy and Editions
 
 Category: Other
 
 Primary Files:
 * app/lib/copy/roasts.dart (roasts, CEO quotes, share captions, CEO rate constant)
+* app/lib/core/edition.dart (Play vs uncut brand copy; only file allowed profanity)
+
+Supporting Files:
+* app/test/edition_test.dart (profanity guard)
+* app/android/app/build.gradle.kts (`play` and `uncut` flavors)
 
 ## Store Assets Tooling
 
@@ -156,7 +161,7 @@ Supporting Files:
 Category: Infra
 
 Primary Files:
-* app/android/app/build.gradle.kts (release signing via key.properties)
+* app/android/app/build.gradle.kts (flavors, release signing via key.properties)
 * app/android/app/src/main/AndroidManifest.xml
 * app/pubspec.yaml
 

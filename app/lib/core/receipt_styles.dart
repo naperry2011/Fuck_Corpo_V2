@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'edition.dart';
 import 'theme.dart';
 
 /// Looks for exported receipts and Wrapped slides. Everything but [classic]
@@ -7,7 +8,7 @@ import 'theme.dart';
 enum ReceiptStyle {
   classic(
     label: 'CLASSIC',
-    header: 'FUCK CORPO INC.',
+    header: '${Edition.brand} INC.',
     background: Payslip.ink,
     paper: Payslip.paper,
     ink: Payslip.ink,
@@ -17,7 +18,7 @@ enum ReceiptStyle {
   ),
   gold(
     label: 'GOLD RECEIPT',
-    header: 'FUCK CORPO PRIVATE BANKING',
+    header: '${Edition.brand} PRIVATE BANKING',
     background: Color(0xFF1A1A1A),
     paper: Color(0xFFEFD9A0),
     ink: Color(0xFF412402),

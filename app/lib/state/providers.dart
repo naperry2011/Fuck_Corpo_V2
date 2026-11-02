@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/break_mode.dart';
+import '../core/edition.dart';
 import '../core/receipt_styles.dart';
 import '../core/takeover.dart';
 import '../core/pay_profile.dart';
@@ -59,9 +60,11 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
 final themeModeProvider =
     NotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);
 
-/// Personal builds only: `--dart-define=UNLOCK_PRO=true` grants Pro without
+/// The uncut APK has no Play billing, so Pro is free there. Personal builds
+/// can also pass `--dart-define=UNLOCK_PRO=true` to grant Pro without
 /// billing. Never pass it to a build uploaded to Play.
-const unlockProForThisBuild = bool.fromEnvironment('UNLOCK_PRO');
+const unlockProForThisBuild =
+    isUncut || bool.fromEnvironment('UNLOCK_PRO');
 
 /// Pro entitlement, cached locally. Set by a confirmed Google Play purchase
 /// or restore (see features/pro/billing.dart).

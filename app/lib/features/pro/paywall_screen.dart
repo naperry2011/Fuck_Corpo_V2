@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/edition.dart';
 import '../../state/providers.dart';
 import '../../widgets/payslip_parts.dart';
 import 'billing.dart';
@@ -49,7 +50,7 @@ class PaywallScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
           children: [
-            const Text('FUCK CORPO INC.\nPROMOTION OFFER',
+            const Text('${Edition.brand} INC.\nPROMOTION OFFER',
                 textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
             const DashedDivider(),
             const Text(

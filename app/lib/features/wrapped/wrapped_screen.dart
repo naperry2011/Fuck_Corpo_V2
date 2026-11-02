@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../copy/roasts.dart';
 import '../../core/theme.dart';
+import '../../core/edition.dart';
 import '../../core/wrapped.dart';
 import '../../state/providers.dart';
 import '../share/share_service.dart';
@@ -49,7 +50,7 @@ class _WrappedScreenState extends ConsumerState<WrappedScreen> {
               as RenderRepaintBoundary;
       final file = await captureCard(
         boundary,
-        'fuck-corpo-wrapped-${widget.year}-${_index + 1}',
+        '${Edition.fileSlug}-wrapped-${widget.year}-${_index + 1}',
       );
       await shareCardImage(file, text: wrappedCaption);
     } catch (_) {

@@ -35,6 +35,26 @@ android {
         versionName = flutter.versionName
     }
 
+    // Play is the clean edition. Uncut keeps the original ID so existing
+    // sideloaded installs keep their data; it needs --dart-define=EDITION=uncut.
+    buildFeatures {
+        resValues = true
+    }
+
+    flavorDimensions += "edition"
+    productFlavors {
+        create("play") {
+            dimension = "edition"
+            applicationId = "com.corpodump.app"
+            resValue("string", "app_name", "Corpo Dump")
+        }
+        create("uncut") {
+            dimension = "edition"
+            applicationId = "com.fcorpo.fcorpo"
+            resValue("string", "app_name", "F*ck Corpo")
+        }
+    }
+
     signingConfigs {
         create("release") {
             if (keystorePropertiesFile.exists()) {

@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/achievements.dart';
+import '../../core/edition.dart';
 import '../../core/receipt_styles.dart';
 import '../../data/csv_export.dart';
 import '../../state/providers.dart';
@@ -20,11 +21,11 @@ class PerksScreen extends ConsumerWidget {
   Future<void> _export(BuildContext context, WidgetRef ref) async {
     final sessions = ref.read(sessionsProvider).value ?? const [];
     final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/fuck-corpo-ledger.csv');
+    final file = File('${dir.path}/${Edition.fileSlug}-ledger.csv');
     await file.writeAsString(sessionsToCsv(sessions));
     await SharePlus.instance.share(ShareParams(
       files: [XFile(file.path, mimeType: 'text/csv')],
-      subject: 'Fuck Corpo ledger',
+      subject: '${Edition.appName} ledger',
     ));
   }
 
@@ -43,7 +44,7 @@ class PerksScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            const Text('FUCK CORPO INC.\nBENEFITS PACKAGE',
+            const Text('${Edition.brand} INC.\nBENEFITS PACKAGE',
                 textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
             const DashedDivider(),
             if (isPro) ...[
@@ -145,7 +146,7 @@ class PerksScreen extends ConsumerWidget {
             OutlinedButton(
               onPressed: () => showLicensePage(
                 context: context,
-                applicationName: 'F*ck Corpo',
+                applicationName: Edition.appName,
                 applicationLegalese:
                     'Satire. We just do the math. Your ledger never leaves '
                     'this phone.',

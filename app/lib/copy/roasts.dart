@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../core/break_mode.dart';
+import '../core/edition.dart';
 
 final _rng = Random();
 
@@ -71,13 +72,13 @@ String receiptRoast(BreakMode mode, {required bool isPro}) =>
     pick([...receiptRoasts[mode]!, if (isPro) ...unhingedRoasts]);
 
 const shareCaption =
-    'Corpo paid me to do this. #FuckCorpo #PaidToPoop';
+    'Corpo paid me to do this. ${Edition.hashtag} #PaidToPoop';
 
 const takeoverCaption =
-    'Hostile takeover complete. Invoice sent. #FuckCorpo #HostileTakeover';
+    'Hostile takeover complete. Invoice sent. ${Edition.hashtag} #HostileTakeover';
 
 const wrappedCaption =
-    'My Corpo Wrapped is in. Wages stolen back. #FuckCorpo #CorpoWrapped';
+    'My Corpo Wrapped is in. Wages stolen back. ${Edition.hashtag} #CorpoWrapped';
 
 /// Hypothetical CEO on a \$20M/year package, paid around the clock.
 const ceoPerSecond = 20000000 / (365 * 24 * 3600);

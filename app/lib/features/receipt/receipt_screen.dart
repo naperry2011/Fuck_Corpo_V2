@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../copy/roasts.dart';
+import '../../core/edition.dart';
 import '../../core/format.dart';
 import '../../data/database.dart';
 import '../../state/providers.dart';
@@ -32,7 +33,7 @@ class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
       final boundary = _cardKey.currentContext!.findRenderObject()!
           as RenderRepaintBoundary;
       final file = await captureCard(
-          boundary, 'fuck-corpo-receipt-${widget.session.id}');
+          boundary, '${Edition.fileSlug}-receipt-${widget.session.id}');
       await shareCardImage(file,
           text: _isTakeover ? takeoverCaption : shareCaption);
     } catch (_) {

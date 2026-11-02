@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/edition.dart';
 import 'core/theme.dart';
 import 'features/onboarding/intake_form_screen.dart';
 import 'features/pro/billing.dart';
@@ -21,12 +22,12 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   runApp(ProviderScope(
     overrides: [sharedPrefsProvider.overrideWithValue(prefs)],
-    child: const FuckCorpoApp(),
+    child: const CorpoApp(),
   ));
 }
 
-class FuckCorpoApp extends ConsumerWidget {
-  const FuckCorpoApp({super.key});
+class CorpoApp extends ConsumerWidget {
+  const CorpoApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +36,7 @@ class FuckCorpoApp extends ConsumerWidget {
     // delivered and acknowledged even if the paywall is never opened.
     if (!unlockProForThisBuild) ref.watch(billingProvider);
     return MaterialApp(
-      title: 'F*ck Corpo',
+      title: Edition.appName,
       debugShowCheckedModeBanner: false,
       theme: payslipLight,
       darkTheme: payslipNightShift,

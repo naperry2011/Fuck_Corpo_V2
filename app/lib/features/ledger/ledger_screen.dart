@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/break_mode.dart';
+import '../../core/edition.dart';
 import '../../core/format.dart';
 import '../../core/stats.dart';
 import '../../data/database.dart';
@@ -62,7 +63,7 @@ class _LedgerScreenState extends ConsumerState<LedgerScreen> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            const Text('FUCK CORPO INC.\nPAY HISTORY',
+            const Text('${Edition.brand} INC.\nPAY HISTORY',
                 textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
             const DashedDivider(),
             Wrap(spacing: 8, runSpacing: 8, children: [
@@ -126,7 +127,7 @@ class _LedgerScreenState extends ConsumerState<LedgerScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 child: Text(
-                  'No receipts yet. Go take a paid shit.',
+                  Edition.emptyReceipts,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: faded),
                 ),

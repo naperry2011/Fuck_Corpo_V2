@@ -1,6 +1,6 @@
 # Data Flow
 
-Generated: 2026-10-25 | commit dc30960 | by /code-map
+Generated: 2026-11-01 | commit c435631 | by /code-map
 
 No server. All app data stays on the device.
 

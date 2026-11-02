@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/edition.dart';
 import '../../core/format.dart';
 import '../../core/portfolio.dart';
 import '../../core/takeover.dart';
@@ -26,7 +27,7 @@ class HoldingsSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const DashedDivider(),
-        Text('FUCK CORPO HOLDINGS · ACQUISITIONS',
+        Text('${Edition.brand} HOLDINGS · ACQUISITIONS',
             style: TextStyle(color: faded)),
         const SizedBox(height: 8),
         if (p.isEmpty)

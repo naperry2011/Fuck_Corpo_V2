@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app/store_assets/play/feature-graphic-1024x500.png" alt="F*ck Corpo: Get paid to poop" width="100%">
+  <img src="app/store_assets/play/feature-graphic-1024x500.png" alt="Corpo Dump: Get paid to poop" width="100%">
 </p>
 
 <h1 align="center">FUCK CORPO INC.</h1>
@@ -11,7 +11,7 @@
 <p align="center">
   <img alt="Flutter" src="https://img.shields.io/badge/Flutter-3.44-1a1a1a?style=flat-square&logo=flutter&logoColor=f4f1e8">
   <img alt="Android" src="https://img.shields.io/badge/Android-first-1a1a1a?style=flat-square&logo=android&logoColor=f4f1e8">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-37%20passing-1a1a1a?style=flat-square">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-39%20passing-1a1a1a?style=flat-square">
   <img alt="Status" src="https://img.shields.io/badge/status-pre--launch-a32d2d?style=flat-square">
   <a href="https://fuckcorpov2-web.vercel.app"><img alt="Website" src="https://img.shields.io/badge/website-live-1a1a1a?style=flat-square&logo=vercel&logoColor=f4f1e8"></a>
 </p>
@@ -35,6 +35,19 @@
 
 A satirical Android app that clocks every dump, smoke break, and lunch heist you take on company time, prints you a receipt for it, and hands you a year-end W-2 of wages stolen back. A pixel-art fat-cat CEO watches the whole time and gets angrier with every cent.
 
+## Two editions, one codebase
+
+Google Play doesn't allow profanity in apps or listings, so the swearing ships separately.
+
+| | Corpo Dump | F*ck Corpo Uncut |
+|---|---|---|
+| **Where** | Google Play | Direct APK |
+| **Copy** | Crude, no swearing | Full send |
+| **Pro** | One-time purchase | Free |
+| **Package ID** | `com.corpodump.app` | `com.fcorpo.fcorpo` |
+
+Builds are clean by default. All the swearing lives in [`app/lib/core/edition.dart`](app/lib/core/edition.dart), and a test fails if it shows up anywhere else.
+
 ---
 
 ## The paperwork
@@ -42,13 +55,13 @@ A satirical Android app that clocks every dump, smoke break, and lunch heist you
 <table>
   <tr>
     <td><img src="app/store_assets/play/screenshot-1_timer.jpg" alt="Live timer with an angry CEO" width="200"></td>
-    <td><img src="app/store_assets/play/screenshot-2_receipt.jpg" alt="Shareable receipt" width="200"></td>
-    <td><img src="app/store_assets/play/screenshot-3_ledger.jpg" alt="Pay history ledger" width="200"></td>
-    <td><img src="app/store_assets/play/screenshot-5_wrapped_w2.jpg" alt="Corpo Wrapped W-2(ish)" width="200"></td>
+    <td><img src="app/store_assets/play/screenshot-2_invoice.jpg" alt="Hostile takeover damages invoice" width="200"></td>
+    <td><img src="app/store_assets/play/screenshot-4_ledger.jpg" alt="Pay history ledger" width="200"></td>
+    <td><img src="app/store_assets/play/screenshot-6_wrapped.jpg" alt="Corpo Wrapped W-2(ish)" width="200"></td>
   </tr>
   <tr>
     <td align="center"><sub>CLOCK IN</sub></td>
-    <td align="center"><sub>GET A RECEIPT</sub></td>
+    <td align="center"><sub>BILL THE COMPANY</sub></td>
     <td align="center"><sub>CHECK THE LEDGER</sub></td>
     <td align="center"><sub>FILE YOUR W-2(ISH)</sub></td>
   </tr>
@@ -64,12 +77,12 @@ A satirical Android app that clocks every dump, smoke break, and lunch heist you
 | 4 | **Ledger** | Today, week, month, year. Longest session. Streaks. Late paperwork for the ones you forgot. |
 | 5 | **Corpo Wrapped** | Swipeable year-in-review slides: total reclaimed, peak slacking season, how fast the CEO earns your whole haul. |
 | 6 | **Night shift** | Carbon-copy dark mode, or keep it on paper. Your call. |
-| 7 | **Hostile Takeovers** | Dropping a deuce at Starbucks? Bill them for it. Get a damages invoice (water, TP, soap, AC, Wi-Fi) stamped ACQUIRED, and build a portfolio of every company you've conquered. |
+| 7 | **Hostile Takeovers** | Dropping a deuce at someone else's business? Bill them for it. Get a damages invoice (water, TP, soap, AC, Wi-Fi) stamped ACQUIRED, and build a portfolio of every company you've conquered. |
 | 8 | **Zero surveillance** | No account, no ads, no analytics. Your ledger never leaves the phone. HR will never know. |
 
 ## Promotion to Management
 
-One-time Pro unlock through Google Play. No subscription. We're not monsters.
+One-time Pro unlock through Google Play. No subscription. We're not monsters. (Free in the Uncut edition, which has no Play billing.)
 
 - **3 more breaks:** Doomscroll, Fake Meeting, Coffee Run
 - **15 achievements:** Snip It Off, Mogul, Union Rep, Franchise Tour, Bank Run, Fortune 500, and more
@@ -102,7 +115,7 @@ Same formula on the [website calculator](https://fuckcorpov2-web.vercel.app). Th
 
 ```text
 app/                 Flutter app (Android)
-  lib/core/          pay math, stats, Wrapped, achievements, theme
+  lib/core/          pay math, stats, Wrapped, takeovers, theme, edition copy
   lib/data/          drift database, preferences, CSV export
   lib/features/      timer, receipt, ledger, wrapped, pro, onboarding
   lib/copy/          every roast and CEO quote (edit jokes here)
@@ -122,16 +135,18 @@ flutter test
 flutter run
 ```
 
-Personal build with Pro unlocked (never upload this one to Play):
-
-```bash
-flutter build apk --release --dart-define=UNLOCK_PRO=true
-```
+Plain commands build the clean Play edition (`play` is the default flavor).
 
 Play bundle (needs `app/android/key.properties` and your upload key):
 
 ```bash
 flutter build appbundle --release
+```
+
+Uncut APK, with swearing and free Pro (never upload this one to Play):
+
+```bash
+flutter build apk --release --flavor uncut --dart-define=EDITION=uncut
 ```
 
 Regenerate launcher icons and store graphics:
@@ -143,8 +158,11 @@ flutter test tool/generate_store_assets_test.dart
 ## Status
 
 - [x] App, Pro, and billing built
-- [x] Store listing assets
+- [x] Hostile Takeovers
+- [x] Clean Play edition and Uncut edition
+- [x] Corpo Dump store assets and listing copy
 - [x] Website and privacy policy live
+- [ ] Clean up website for the Play listing
 - [ ] Upload key and Play Console listing
 - [ ] 14-day closed test with 12 testers
 - [ ] Real domain
