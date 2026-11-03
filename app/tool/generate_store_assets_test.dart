@@ -234,11 +234,21 @@ void main() {
   });
 
   testWidgets('framed App Store screenshots', (tester) async {
-    // 1320x2868 is the 6.9-inch iPhone size App Store Connect asks for.
+    // 6.3-inch (1206x2622) is the size App Store Connect requires; 6.9-inch
+    // (1320x2868) is optional. Both come from the 6.9-inch raw captures.
     await _frameScreenshots(
       tester,
       raw: _rawIos,
-      out: _appStore,
+      out: '$_appStore/6.3',
+      size: const Size(1206, 2622),
+      captionHeight: 512,
+      fontSize: 66,
+      sidePadding: 110,
+    );
+    await _frameScreenshots(
+      tester,
+      raw: _rawIos,
+      out: '$_appStore/6.9',
       size: const Size(1320, 2868),
       captionHeight: 560,
       fontSize: 72,
