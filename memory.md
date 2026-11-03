@@ -51,6 +51,8 @@ flutter build ios --simulator --debug
 flutter build ipa --release
 ```
 
+To upload to App Store Connect, pass `--export-options-plist` with `method` app-store-connect and `destination` upload (team `PGVTN7X3HQ`). Flutter 3.44 then crashes looking for `build/ios/ipa/`; the upload has already gone through. Bump the build number in `pubspec.yaml` (`1.0.0+2`, ...) before each new upload.
+
 Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml`). The bundle is for Play upload, at `build/app/outputs/bundle/playRelease/app-play-release.aab`. The APK is the uncut edition and the user's phone build, last copied to `C:\dev\fuck-corpo-uncut.apk`, outside the repo.
 
 ## Release signing
@@ -84,7 +86,7 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 8. Optional: retake screenshots (emulator shield icon in the status bar; faded status bar on Holdings).
 9. Optional later: app icon variants (Pro).
 10. Takeover follow-ups: allow takeovers in late paperwork; consider an opt-in location map (needs privacy policy and data safety updates).
-11. iOS: create the app record and the `pro_unlock` non-consumable in App Store Connect, then TestFlight. 6.9-inch screenshots are ready in `app/store_assets/app_store/`.
+11. iOS (2026-11-02): App Store Connect app "Corpo Dump: Get Paid to Poop" (Apple ID 6830046769, SKU `corpodump-ios`) created. `pro_unlock` non-consumable created at $2.99, all regions, still needs its paywall review screenshot. Build 1.0.0 (1) uploaded to TestFlight. Left: internal testing group, App Store listing (description, keywords, screenshots from `app/store_assets/app_store/`, privacy "Data Not Collected", age rating), then submit. The same account also sells "Paid to Operate" (live); watch for guideline 4.3 near-duplicate rejection.
 
 ## Play listing copy
 
