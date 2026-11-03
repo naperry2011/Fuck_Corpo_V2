@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
@@ -153,7 +152,7 @@ class PerksScreen extends ConsumerWidget {
               ),
               child: const Text('LEGAL FINE PRINT'),
             ),
-            if (kDebugMode && isPro) ...[
+            if (showDebugTools && isPro) ...[
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () => ref.read(proProvider.notifier).relock(),

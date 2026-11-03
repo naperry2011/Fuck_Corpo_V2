@@ -4,7 +4,10 @@
 //   flutter test tool/generate_store_assets_test.dart
 //
 // Phone screenshots: drop raw 1080x2400 emulator captures named
-// `<n>_<anything>.png` into store_assets/raw/ and add a caption below.
+// `<n>_<anything>.png` into store_assets/raw/ (Play) and 1320x2868 iPhone 17
+// Pro Max simulator captures into store_assets/raw_ios/ (App Store), and add a
+// caption below. Build the iOS capture with --dart-define=SCREENSHOTS=true so
+// the debug buttons stay hidden.
 
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -23,6 +26,8 @@ const _res = 'android/app/src/main/res';
 const _iosIcon = 'ios/Runner/Assets.xcassets/AppIcon.appiconset';
 const _play = 'store_assets/play';
 const _raw = 'store_assets/raw';
+const _rawIos = 'store_assets/raw_ios';
+const _appStore = 'store_assets/app_store';
 
 /// Store captions keyed by the raw screenshot's number prefix. Kept clean:
 /// store metadata gets stricter review than in-app content.
@@ -215,63 +220,104 @@ void main() {
     _writePng('$_play/feature-graphic-1024x500.png', graphic);
   });
 
-  testWidgets('framed phone screenshots', (tester) async {
-    final dir = Directory(_raw);
-    if (!dir.existsSync()) return;
-    final raws = dir.listSync().whereType<File>().where((f) => f.path.endsWith('.png')).toList()
-      ..sort((a, b) => a.path.compareTo(b.path));
-
-    for (final file in raws) {
-      final name = file.uri.pathSegments.last;
-      final caption = _captions[name.split('_').first] ?? '';
-      final shot = await tester.runAsync(() async {
-        final codec = await ui.instantiateImageCodec(file.readAsBytesSync());
-        return (await codec.getNextFrame()).image;
-      });
-
-      // 1080x1920 (9:16) keeps the long side under Play's 2:1 limit.
-      final framed = await _render(
-        tester,
-        const Size(1080, 1920),
-        ColoredBox(
-          color: Payslip.ink,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 360,
-                child: Center(
-                  child: Text(
-                    caption,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontFamily: Payslip.fontFamily,
-                      color: Payslip.paper,
-                      fontSize: 58,
-                      fontWeight: FontWeight.bold,
-                      height: 1.15,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(150, 0, 150, 0),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(36)),
-                      child: RawImage(image: shot, fit: BoxFit.fitWidth),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-      shot!.dispose();
-      _writeJpg('$_play/screenshot-${name.replaceAll('.png', '.jpg')}', framed);
-    }
+  testWidgets('framed Play screenshots', (tester) async {
+    // 1080x1920 (9:16) keeps the long side under Play's 2:1 limit.
+    await _frameScreenshots(
+      tester,
+      raw: _raw,
+      out: _play,
+      size: const Size(1080, 1920),
+      captionHeight: 360,
+      fontSize: 58,
+      sidePadding: 150,
+    );
   });
+
+  testWidgets('framed App Store screenshots', (tester) async {
+    // 1320x2868 is the 6.9-inch iPhone size App Store Connect asks for.
+    await _frameScreenshots(
+      tester,
+      raw: _rawIos,
+      out: _appStore,
+      size: const Size(1320, 2868),
+      captionHeight: 560,
+      fontSize: 72,
+      sidePadding: 120,
+    );
+  });
+}
+
+/// Puts each `<n>_<anything>.png` capture in [raw] under its caption on an
+/// ink background and writes `screenshot-<n>_<anything>.jpg` to [out].
+Future<void> _frameScreenshots(
+  WidgetTester tester, {
+  required String raw,
+  required String out,
+  required Size size,
+  required double captionHeight,
+  required double fontSize,
+  required double sidePadding,
+}) async {
+  final dir = Directory(raw);
+  if (!dir.existsSync()) return;
+  final raws =
+      dir
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.png'))
+          .toList()
+        ..sort((a, b) => a.path.compareTo(b.path));
+
+  for (final file in raws) {
+    final name = file.uri.pathSegments.last;
+    final caption = _captions[name.split('_').first] ?? '';
+    final shot = await tester.runAsync(() async {
+      final codec = await ui.instantiateImageCodec(file.readAsBytesSync());
+      return (await codec.getNextFrame()).image;
+    });
+
+    final framed = await _render(
+      tester,
+      size,
+      ColoredBox(
+        color: Payslip.ink,
+        child: Column(
+          children: [
+            SizedBox(
+              height: captionHeight,
+              child: Center(
+                child: Text(
+                  caption,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: Payslip.fontFamily,
+                    color: Payslip.paper,
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.bold,
+                    height: 1.15,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: sidePadding),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(36),
+                    ),
+                    child: RawImage(image: shot, fit: BoxFit.fitWidth),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    shot!.dispose();
+    _writeJpg('$out/screenshot-${name.replaceAll('.png', '.jpg')}', framed);
+  }
 }

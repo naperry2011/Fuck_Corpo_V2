@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -107,7 +106,7 @@ class PaywallScreen extends ConsumerWidget {
               onPressed: notifier.restore,
               child: const Text('ALREADY PROMOTED? RESTORE'),
             ),
-            if (kDebugMode) ...[
+            if (showDebugTools) ...[
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () => ref.read(proProvider.notifier).unlock(),

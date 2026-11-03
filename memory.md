@@ -84,7 +84,7 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 8. Optional: retake screenshots (emulator shield icon in the status bar; faded status bar on Holdings).
 9. Optional later: app icon variants (Pro).
 10. Takeover follow-ups: allow takeovers in late paperwork; consider an opt-in location map (needs privacy policy and data safety updates).
-11. iOS: create the app record and the `pro_unlock` non-consumable in App Store Connect, take 6.9-inch screenshots, then TestFlight.
+11. iOS: create the app record and the `pro_unlock` non-consumable in App Store Connect, then TestFlight. 6.9-inch screenshots are ready in `app/store_assets/app_store/`.
 
 ## Play listing copy
 
@@ -95,6 +95,8 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 
 ## Gotchas
 
+- iOS screenshots: boot the iPhone 17 Pro Max simulator, set the status bar with `xcrun simctl status_bar booted override --time 9:41`, build with `--dart-define=SCREENSHOTS=true` (hides the debug buttons, since the simulator only runs debug builds), seed from the Ledger, capture with `xcrun simctl io booted screenshot` into `store_assets/raw_ios/`, then run the asset tool. To preset settings, shut the simulator down and write the app container's `Library/Preferences/com.corpodump.app.plist` directly; `defaults write` gets overwritten by the prefs cache.
+- Xcode 27's `lipo` rejects Flutter 3.44's two-architecture check, so simulator builds are arm64 only (`ARCHS[sdk=iphonesimulator*] = arm64`). Remove that once Flutter is upgraded.
 - iOS builds fail inside `~/Documents` on the Mac: it is iCloud Drive, which adds file attributes that codesign rejects ("resource fork, Finder information, or similar detritus not allowed"). The Mac checkout lives at `~/dev/corpo-dump` for this reason; keep it out of `~/Documents` and `~/Desktop`.
 
 - The Android emulator `emulator-5554` is shared with another project (`com.nickperry.afterword`). Check the foreground app before automating taps.

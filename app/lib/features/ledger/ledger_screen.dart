@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -110,7 +109,7 @@ class _LedgerScreenState extends ConsumerState<LedgerScreen> {
                   MaterialPageRoute(builder: (_) => const ManualLogScreen())),
               child: const Text('+ FILE LATE PAPERWORK'),
             ),
-            if (kDebugMode) ...[
+            if (showDebugTools) ...[
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () => seedFakeYear(ref.read(databaseProvider),

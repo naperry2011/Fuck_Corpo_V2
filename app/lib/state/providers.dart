@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart' show ThemeMode;
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,6 +66,10 @@ final themeModeProvider =
 /// billing. Never pass it to a build uploaded to Play.
 const unlockProForThisBuild =
     isUncut || bool.fromEnvironment('UNLOCK_PRO');
+
+/// Debug-only buttons (seed, promote, demote). `--dart-define=SCREENSHOTS=true`
+/// hides them, since the iOS simulator only runs debug builds.
+const showDebugTools = kDebugMode && !bool.fromEnvironment('SCREENSHOTS');
 
 /// Pro entitlement, cached locally. Set by a confirmed Google Play purchase
 /// or restore (see features/pro/billing.dart).
