@@ -74,7 +74,7 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 
 ## Open items
 
-1. Rename the repo folder away from `Fuck_Corpo_V2` (for example `C:\dev\corpo-dump`) before the final Play build. Dart embeds the build path in `libapp.so`, so the word is in the binary even though users never see it.
+1. Rename the Windows checkout away from `Fuck_Corpo_V2` (for example `C:\dev\corpo-dump`) before the final Play build. The Mac checkout already lives at `~/dev/corpo-dump` (moved 2026-11-02). Dart embeds the build path in `libapp.so`, so the word is in the binary even though users never see it.
 2. Create upload keystore and `key.properties`.
 3. Pick a clean domain (for example `corpodump.com`, availability unchecked). The privacy URL in the listing must not contain the word, so `fuckcorpov2-web.vercel.app` cannot be used.
 4. Clean up the website: clean privacy page, move uncensored material to a separate page, set absolute `og:image` URL, add sitemap. Then host the uncut APK and add the domain to share cards (Play edition must not link to the APK).
@@ -95,7 +95,7 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 
 ## Gotchas
 
-- iOS builds fail inside `~/Documents` on the Mac: it is iCloud Drive, which adds file attributes that codesign rejects ("resource fork, Finder information, or similar detritus not allowed"). Build from a checkout outside iCloud (for example `~/dev/corpo-dump`, which also fixes open item 1).
+- iOS builds fail inside `~/Documents` on the Mac: it is iCloud Drive, which adds file attributes that codesign rejects ("resource fork, Finder information, or similar detritus not allowed"). The Mac checkout lives at `~/dev/corpo-dump` for this reason; keep it out of `~/Documents` and `~/Desktop`.
 
 - The Android emulator `emulator-5554` is shared with another project (`com.nickperry.afterword`). Check the foreground app before automating taps.
 - `uiautomator dump` fails while the timer is ticking (screen never idles); tap by coordinates then.
