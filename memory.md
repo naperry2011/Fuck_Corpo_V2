@@ -7,7 +7,7 @@ Satirical app that calculates how much your employer pays you while you poop, sm
 | Area | Status |
 |---|---|
 | Android app (`app/`) | v1 plus Hostile Takeovers, in two editions. 39 tests passing. Play AAB and uncut APK both build. |
-| Website (`web/`) | Live at https://fuckcorpov2-web.vercel.app |
+| Website (`web/`) | Live at https://www.corpodump.com (bare domain redirects to www). Privacy policy: https://www.corpodump.com/privacy |
 | Play Store | Google account approved. Not submitted. Corpo Dump assets ready in `app/store_assets/play/`. |
 | iOS (`app/ios/`) | Scaffolded 2026-11-02 on the Mac. Both editions build and the play edition runs on the iOS 26.5 simulator. Not on a device, not in App Store Connect. |
 
@@ -76,9 +76,9 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 
 1. Rename the Windows checkout away from `Fuck_Corpo_V2` (for example `C:\dev\corpo-dump`) before the final Play build. The Mac checkout already lives at `~/dev/corpo-dump` (moved 2026-11-02). Dart embeds the build path in `libapp.so`, so the word is in the binary even though users never see it.
 2. Create upload keystore and `key.properties`.
-3. Pick a clean domain (for example `corpodump.com`, availability unchecked). The privacy URL in the listing must not contain the word, so `fuckcorpov2-web.vercel.app` cannot be used.
+3. Done 2026-11-02: `corpodump.com` (Namecheap) points at Vercel. Use https://www.corpodump.com/privacy as the privacy URL in both stores, never the old `vercel.app` address.
 4. Clean up the website: clean privacy page, move uncensored material to a separate page, set absolute `og:image` URL, add sitemap. Then host the uncut APK and add the domain to share cards (Play edition must not link to the APK).
-5. Add a real contact email to `web/privacy.html` (currently a "coming soon" line) before Play submission.
+5. Done: `support@corpodump.com` is on the site and forwards through Namecheap email forwarding. Use it as the support contact in both stores.
 6. Play Console: create the app (listing copy below), upload to internal testing (locks `com.corpodump.app`), create `pro_unlock`, add license testers, content rating questionnaire, data safety (no data collected). Test a real purchase.
 7. Run the 12-tester / 14-day closed test.
 8. Optional: retake screenshots (emulator shield icon in the status bar; faded status bar on Holdings).
