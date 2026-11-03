@@ -9,7 +9,7 @@ Satirical app that calculates how much your employer pays you while you poop, sm
 | Android app (`app/`) | v1 plus Hostile Takeovers, in two editions. 39 tests passing. Play AAB and uncut APK both build. |
 | Website (`web/`) | Live at https://www.corpodump.com (bare domain redirects to www). Privacy policy: https://www.corpodump.com/privacy |
 | Play Store | Google account approved. Not submitted. Corpo Dump assets ready in `app/store_assets/play/`. |
-| iOS (`app/ios/`) | Scaffolded 2026-11-02 on the Mac. Both editions build and the play edition runs on the iOS 26.5 simulator. Not on a device, not in App Store Connect. |
+| iOS (`app/ios/`) | Corpo Dump 1.0.0 (build 1) submitted to App Review 2026-11-02, status Waiting for Review. `pro_unlock` submitted with it. TestFlight group "Internal" has the build. |
 
 ## Decisions
 
@@ -86,7 +86,7 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 8. Optional: retake screenshots (emulator shield icon in the status bar; faded status bar on Holdings).
 9. Optional later: app icon variants (Pro).
 10. Takeover follow-ups: allow takeovers in late paperwork; consider an opt-in location map (needs privacy policy and data safety updates).
-11. iOS (2026-11-02): App Store Connect app "Corpo Dump: Get Paid to Poop" (Apple ID 6830046769, SKU `corpodump-ios`) created. `pro_unlock` non-consumable created at $2.99, all regions, still needs its paywall review screenshot. Build 1.0.0 (1) uploaded; TestFlight group "Internal" (auto-distribution) has the account holder. Listing filled 2026-11-02: subtitle "Your boss pays you to poop", Entertainment + Lifestyle, 13+ (frequent crude humor, infrequent tobacco), free app in 175 regions, privacy URL and "Data Not Collected" (saved, not yet published), description, keywords, support/marketing URL https://www.corpodump.com, 6.3-inch screenshots, review notes, build 1 attached. `pro_unlock` review screenshot uploaded (`app/store_assets/raw_ios/review_paywall.png`). Left before submit: publish the privacy answers, App Review contact info. The same account also sells "Paid to Operate" (live); watch for guideline 4.3 near-duplicate rejection.
+11. iOS (2026-11-02): App Store Connect app "Corpo Dump: Get Paid to Poop" (Apple ID 6830046769, SKU `corpodump-ios`) created. `pro_unlock` non-consumable created at $2.99, all regions, still needs its paywall review screenshot. Build 1.0.0 (1) uploaded; TestFlight group "Internal" (auto-distribution) has the account holder. Listing filled 2026-11-02: subtitle "Your boss pays you to poop", Entertainment + Lifestyle, 13+ (frequent crude humor, infrequent tobacco), free app in 175 regions, privacy URL and "Data Not Collected" (saved, not yet published), description, keywords, support/marketing URL https://www.corpodump.com, 6.3-inch screenshots, review notes, build 1 attached. `pro_unlock` review screenshot uploaded (`app/store_assets/raw_ios/review_paywall.png`). Privacy answers published and contact info added; submitted for review 2026-11-02. The same account also sells "Paid to Operate" (live); watch for guideline 4.3 near-duplicate rejection.
 
 ## Play listing copy
 
