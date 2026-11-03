@@ -1,0 +1,34 @@
+{
+  "identifier" : "6C1F2B0A",
+  "nonRenewingSubscriptions" : [ ],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6739000001",
+      "localizations" : [
+        {
+          "description" : "Doomscroll, Fake Meeting and Coffee Run breaks, achievements, receipt styles, roasts and CSV export.",
+          "displayName" : "Promotion to Management",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "pro_unlock",
+      "referenceName" : "Promotion to Management",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6739000000",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [ ]
+  },
+  "subscriptionGroups" : [ ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

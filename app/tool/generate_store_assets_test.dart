@@ -1,5 +1,5 @@
-// Renders the launcher icons and Google Play listing graphics from the app's
-// own widgets. Not part of the normal test suite; run it on demand:
+// Renders the Android and iOS app icons and Google Play listing graphics
+// from the app's own widgets. Not part of the normal test suite; run it on demand:
 //
 //   flutter test tool/generate_store_assets_test.dart
 //
@@ -20,6 +20,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 
 const _res = 'android/app/src/main/res';
+const _iosIcon = 'ios/Runner/Assets.xcassets/AppIcon.appiconset';
 const _play = 'store_assets/play';
 const _raw = 'store_assets/raw';
 
@@ -127,6 +128,27 @@ void main() {
 <resources>
     <color name="ic_launcher_background">#F4F1E8</color>
 </resources>
+''');
+
+    // iOS takes one opaque 1024px icon and masks the corners itself.
+    _writePng('$_iosIcon/Icon-App-1024x1024@1x.png',
+        await _render(tester, const Size.square(1024),
+            _icon(background: true, ceoScale: 0.72)));
+    File('$_iosIcon/Contents.json').writeAsStringSync('''
+{
+  "images" : [
+    {
+      "filename" : "Icon-App-1024x1024@1x.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
 ''');
 
     _writePng('$_play/icon-512.png',

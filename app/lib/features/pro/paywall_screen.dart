@@ -41,7 +41,7 @@ class PaywallScreen extends ConsumerWidget {
         billing.status == BillingStatus.pending;
 
     void unavailable() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(billing.message ?? 'Still connecting to Google Play.')));
+        content: Text(billing.message ?? 'Still connecting to $storeName.')));
 
     return Scaffold(
       appBar: AppBar(),
@@ -116,8 +116,8 @@ class PaywallScreen extends ConsumerWidget {
             ],
             const SizedBox(height: 12),
             Text(
-              'One-time purchase through Google Play. Restores automatically '
-              'on reinstall with the same Google account.',
+              'One-time purchase through $storeName. Restores automatically '
+              'on reinstall with the same $storeAccount.',
               textAlign: TextAlign.center,
               style: TextStyle(color: faded, fontSize: 11),
             ),

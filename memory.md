@@ -9,11 +9,12 @@ Satirical app that calculates how much your employer pays you while you poop, sm
 | Android app (`app/`) | v1 plus Hostile Takeovers, in two editions. 39 tests passing. Play AAB and uncut APK both build. |
 | Website (`web/`) | Live at https://fuckcorpov2-web.vercel.app |
 | Play Store | Google account approved. Not submitted. Corpo Dump assets ready in `app/store_assets/play/`. |
-| iOS | Not started (needs a Mac or cloud build service). |
+| iOS (`app/ios/`) | Scaffolded 2026-11-02 on the Mac. Both editions build and the play edition runs on the iOS 26.5 simulator. Not on a device, not in App Store Connect. |
 
 ## Decisions
 
-- **Platform:** Android only for now; the user develops on Windows. Flutter so iOS can follow from the same code.
+- **Platform:** Android first (developed on Windows), iOS from the same Flutter code (built on a Mac).
+- **iOS (2026-11-02):** Xcode schemes `play` and `uncut` mirror the Android flavors (build configs `Debug-play`, `Release-uncut`, etc.). `play`: "Corpo Dump", `com.corpodump.app`, App Store IAP. `uncut`: "F*ck Corpo", `com.fcorpo.fcorpo`, for personal installs only (no App Store, no sideload channel). iPhone only, portrait only. Plugins come in through Swift Package Manager, so there is no Podfile. Billing uses StoreKit 2; the launch-time restore reads current entitlements and does not prompt for a password. Store copy in the paywall switches between Google Play and the App Store. `ios/Runner/Products.storekit` lets Xcode test `pro_unlock` locally (play scheme, run from Xcode). `ios/Runner/PrivacyInfo.xcprivacy` declares no tracking and no collected data.
 - **Editions (2026-11-01):** Google Play bans profanity in apps and listings, including in-app text, so the original "censored name, uncensored app" plan was dropped. One codebase, two Android flavors. `play`: "Corpo Dump", `com.corpodump.app`, clean copy, paid Pro. `uncut`: "F*ck Corpo", `com.fcorpo.fcorpo` (keeps existing sideloaded data), full-send copy, free Pro, distributed as a direct APK. All profanity lives in `core/edition.dart`; `test/edition_test.dart` fails if it appears elsewhere in `lib/` or `tool/`. Builds default to clean. No hidden toggle in the Play build, and the Play edition never links to the APK.
 - **Design:** payslip/receipt parody. Off-white paper `#F4F1E8`, ink `#1A1A1A`, stamp red `#A32D2D`, Courier Prime (bundled, OFL). Screens are parody paperwork (intake form, receipts, W-2(ish)). Mascot is a pixel-art fat-cat CEO who gets angrier as earnings rise. Dark mode is "night shift" carbon copy, selectable in Perks (System / Paper / Night shift).
 - **Social:** solo app, no accounts or backend. All data on device (drift/SQLite + shared_preferences). Shareable 1080x1350 receipt and Wrapped images via the system share sheet.
@@ -46,6 +47,8 @@ Satirical app that calculates how much your employer pays you while you poop, sm
 flutter test
 flutter build appbundle --release
 flutter build apk --release --flavor uncut --dart-define=EDITION=uncut
+flutter build ios --simulator --debug
+flutter build ipa --release
 ```
 
 Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml`). The bundle is for Play upload, at `build/app/outputs/bundle/playRelease/app-play-release.aab`. The APK is the uncut edition and the user's phone build, last copied to `C:\dev\fuck-corpo-uncut.apk`, outside the repo.
@@ -79,8 +82,9 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 6. Play Console: create the app (listing copy below), upload to internal testing (locks `com.corpodump.app`), create `pro_unlock`, add license testers, content rating questionnaire, data safety (no data collected). Test a real purchase.
 7. Run the 12-tester / 14-day closed test.
 8. Optional: retake screenshots (emulator shield icon in the status bar; faded status bar on Holdings).
-9. Optional later: app icon variants (Pro), iOS build.
+9. Optional later: app icon variants (Pro).
 10. Takeover follow-ups: allow takeovers in late paperwork; consider an opt-in location map (needs privacy policy and data safety updates).
+11. iOS: set the Apple team in Xcode (Signing & Capabilities), create `com.corpodump.app` and the `pro_unlock` non-consumable in App Store Connect, take 6.9-inch screenshots, then TestFlight.
 
 ## Play listing copy
 
@@ -90,6 +94,8 @@ Run from `app/`. `play` is the default flavor (`default-flavor` in `pubspec.yaml
 - Full description: lead with the "Your boss pays you by the second" hook, then Hostile Takeovers, features, Management perks, and the satire line. Name no real companies and use no swear words. Screenshots use made-up companies from `data/dev_seed.dart`.
 
 ## Gotchas
+
+- iOS builds fail inside `~/Documents` on the Mac: it is iCloud Drive, which adds file attributes that codesign rejects ("resource fork, Finder information, or similar detritus not allowed"). Build from a checkout outside iCloud (for example `~/dev/corpo-dump`, which also fixes open item 1).
 
 - The Android emulator `emulator-5554` is shared with another project (`com.nickperry.afterword`). Check the foreground app before automating taps.
 - `uiautomator dump` fails while the timer is ticking (screen never idles); tap by coordinates then.

@@ -166,7 +166,8 @@ flutter test tool/generate_store_assets_test.dart
 - [ ] Upload key and Play Console listing
 - [ ] 14-day closed test with 12 testers
 - [ ] Real domain
-- [ ] iOS
+- [x] iOS project (both editions build)
+- [ ] App Store Connect listing and TestFlight
 
 ## Fine print
 

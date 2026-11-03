@@ -1,13 +1,23 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 import '../../state/providers.dart';
 
 /// One-time, non-consumable product. Must match the product ID created in
-/// Play Console > Monetize > In-app products.
+/// Play Console > Monetize > In-app products and in App Store Connect >
+/// In-App Purchases.
 const proProductId = 'pro_unlock';
+
+bool get _isApple => defaultTargetPlatform == TargetPlatform.iOS;
+
+/// The store that sells Pro on this platform, for user-facing copy.
+String get storeName => _isApple ? 'the App Store' : 'Google Play';
+
+/// The account purchases are tied to on this platform.
+String get storeAccount => _isApple ? 'Apple Account' : 'Google account';
 
 enum BillingStatus { loading, ready, unavailable, pending, error }
 
@@ -25,7 +35,7 @@ class BillingState {
 final inAppPurchaseProvider =
     Provider<InAppPurchase>((ref) => InAppPurchase.instance);
 
-/// Talks to Google Play Billing. Purchases are trusted client-side (no
+/// Talks to Google Play Billing or StoreKit. Purchases are trusted client-side (no
 /// receipt server); a paid unlock flips the local Pro flag in [proProvider].
 class BillingNotifier extends Notifier<BillingState> {
   StreamSubscription<List<PurchaseDetails>>? _sub;
@@ -50,7 +60,7 @@ class BillingNotifier extends Notifier<BillingState> {
     try {
       if (!await _iap.isAvailable()) {
         state = const BillingState(BillingStatus.unavailable,
-            message: "Google Play billing isn't available on this device.");
+            message: "In-app purchases aren't available on this device.");
         return;
       }
       final response = await _iap.queryProductDetails({proProductId});
@@ -67,7 +77,7 @@ class BillingNotifier extends Notifier<BillingState> {
       await _iap.restorePurchases();
     } catch (e) {
       state = BillingState(BillingStatus.unavailable,
-          message: "Couldn't reach Google Play: $e");
+          message: "Couldn't reach $storeName: $e");
     }
   }
 
@@ -100,7 +110,7 @@ class BillingNotifier extends Notifier<BillingState> {
       switch (p.status) {
         case PurchaseStatus.pending:
           state = state.copyWith(BillingStatus.pending,
-              message: 'Payment pending. Pro unlocks when Google confirms it.');
+              message: 'Payment pending. Pro unlocks when $storeName confirms it.');
         case PurchaseStatus.purchased:
         case PurchaseStatus.restored:
           await ref.read(proProvider.notifier).unlock();
@@ -111,8 +121,9 @@ class BillingNotifier extends Notifier<BillingState> {
         case PurchaseStatus.canceled:
           state = state.copyWith(BillingStatus.ready);
       }
-      // Acknowledges the purchase on Play; unacknowledged purchases are
-      // refunded automatically after a few days.
+      // Acknowledges the purchase on Play (unacknowledged purchases are
+      // refunded automatically after a few days) and finishes the StoreKit
+      // transaction so it stops being redelivered.
       if (p.pendingCompletePurchase) await _iap.completePurchase(p);
     }
   }
